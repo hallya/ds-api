@@ -17,7 +17,7 @@
     "commit": "cz",
     "release": "npm run release:version && git push --follow-tags",
     "release:version": "standard-version",
-    "release:publish": "npm publish --access public",
+    "release:publish": "pnpm publish --access public",
     "prepublishOnly": "npm run test",
     "test": "echo '🧪 Basic syntax check - no automated tests yet, but code compiles successfully'"
   },
@@ -57,9 +57,12 @@
     "winston": "^3.18.3"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^12.0.2",
+    "@semantic-release/npm": "^13.1.1",
     "commitizen": "^4.3.1",
-    "cz-conventional-changelog": "^3.3.0",
-    "standard-version": "^9.5.0"
+    "semantic-release": "^25.0.2"
   },
   "config": {
     "commitizen": {
