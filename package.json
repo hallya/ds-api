@@ -14,7 +14,7 @@
     "remove": "node bin/cli.js remove",
     "purge": "node bin/cli.js purge",
     "info": "node bin/cli.js info",
-    "release": "npm run release:version && npm run release:publish",
+    "release": "npm run release:version && git push --follow-tags",
     "release:version": "npm version patch",
     "release:publish": "npm publish --access public",
     "prepublishOnly": "npm run test",
