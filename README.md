@@ -151,7 +151,7 @@ First, install the package globally or run it using npx:
 ```bash
 npm install -g @hallya/ds-api
 # or
-npx @hallya/ds-api
+npx ds-api
 ```
 
 ```
@@ -160,50 +160,50 @@ npx @hallya/ds-api
 
 ```bash
 # List all torrents
-ds-torrents list
+ds-api list
 
 # Export torrents to JSON file
-ds-torrents list --json
+ds-api list --json
 
 # Remove torrents by title (comma-separated)
-ds-torrents remove "title1,title2"
+ds-api remove "title1,title2"
 
 # Purge torrents by size limit (in GB)
 # Removes oldest/lowest-ratio torrents until total size is below limit
-ds-torrents purge "10.5"
+ds-api purge "10.5"
 
 # Dry run purge (simulation - shows what would be deleted)
-ds-torrents purge "10.5" --dry-run
+ds-api purge "10.5" --dry-run
 
 # Show detailed information for a specific torrent
-ds-torrents info "torrent_title"
+ds-api info "torrent_title"
 ```
 
 #### Common Use Cases
 
 **Daily cleanup**: Remove torrents when disk space gets low
 ```bash
-ds-torrents purge "50"  # Keep only 50GB of torrents
+ds-api purge "50"  # Keep only 50GB of torrents
 ```
 
 **Selective removal**: Remove specific completed torrents
 ```bash
-ds-torrents remove "ubuntu.iso,windows.iso"
+ds-api remove "ubuntu.iso,windows.iso"
 ```
 
 **Monitor downloads**: Check current download status
 ```bash
-ds-torrents list
+ds-api list
 ```
 
 **Export data**: Get torrents data in JSON format for scripting
 ```bash
-ds-torrents list --json  # Creates torrents.json file
+ds-api list --json  # Creates torrents.json file
 ```
 
 **Investigate issues**: Get detailed info about a specific torrent
 ```bash
-ds-torrents info "problematic_torrent"
+ds-api info "problematic_torrent"
 ```
 
 ## Configuration
@@ -311,7 +311,7 @@ const ds = new SynologyDS({
 Enable debug logging to troubleshoot issues:
 
 ```bash
-LOG_LEVEL=debug ds-torrents list
+LOG_LEVEL=debug ds-api list
 ```
 
 Or programmatically:
