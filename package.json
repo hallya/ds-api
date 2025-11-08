@@ -1,0 +1,37 @@
+{
+  "name": "synology-download-station-api",
+  "version": "1.0.0",
+  "description": "A Node.js library for interacting with Synology Download Station API",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "ds-torrents": "./bin/cli.js"
+  },
+  "scripts": {
+    "start": "node bin/cli.js",
+    "list": "node bin/cli.js list",
+    "remove": "node bin/cli.js remove",
+    "purge": "node bin/cli.js purge",
+    "info": "node bin/cli.js info"
+  },
+  "keywords": [
+    "synology",
+    "download-station",
+    "api",
+    "torrents",
+    "nas"
+  ],
+  "author": "Lucien Dulac",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/synology-download-station-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/synology-download-station-api/issues"
+  },
+  "homepage": "https://github.com/your-username/synology-download-station-api#readme"
+}
