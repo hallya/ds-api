@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.8](https://github.com/hallya/ds-api/compare/v1.0.7...v1.0.8) (2025-11-08)
+
+
+### Bug Fixes
+
+* correct npm links to repo ([63f94c1](https://github.com/hallya/ds-api/commit/63f94c1e8e192c9868590e75a10c0a0e770f9337))
+
 ### [1.0.7](https://github.com/hallya/synology-download-station-api/compare/v1.0.6...v1.0.7) (2025-11-08)
 
 ## [1.0.2] - 2024-11-08
