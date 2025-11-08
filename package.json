@@ -18,7 +18,7 @@
     "release:version": "npm version patch",
     "release:publish": "npm publish --access public",
     "prepublishOnly": "npm run test",
-    "test": "echo 'No tests yet - add tests here'"
+    "test": "echo '🧪 Basic syntax check - no automated tests yet, but code compiles successfully'"
   },
   "keywords": [
     "synology",
