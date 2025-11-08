@@ -52,7 +52,7 @@ async function example() {
   const tasks = await ds.getTasksByUploadAndTime();
   console.log('Tasks:', tasks);
 
-  // Purge tasks to keep only 10.5 GB total
+  // Remove tasks until total size is 10.5 GB or more
   const result = await ds.purgeTasksBySize(10.5);
   console.log(result.message);
 
@@ -168,8 +168,8 @@ ds-api list --json
 # Remove torrents by title (comma-separated)
 ds-api remove "title1,title2"
 
-# Purge torrents to keep only specified total size (in GB)
-# Removes oldest/lowest-ratio torrents until total size is at or below limit
+# Purge torrents until total size is at or above specified limit (in GB)
+# Removes oldest/lowest-ratio torrents (sorted by upload size, then oldest completion timestamp) until total size is at or below limit
 ds-api purge "10.5"
 
 # Dry run purge (simulation - shows what would be deleted)
@@ -183,7 +183,7 @@ ds-api info "torrent_title"
 
 **Daily cleanup**: Remove torrents when disk space gets low
 ```bash
-ds-api purge "50"  # Purge to keep only 50GB total
+ds-api purge "50"  # Remove torrents until total size is 50GB or more
 ```
 
 **Selective removal**: Remove specific completed torrents
