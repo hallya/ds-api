@@ -334,6 +334,21 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4. Run tests: `npm test` (when tests are added)
 5. Run linting: `npm run lint` (when linting is configured)
 
+### Release Process
+
+The project uses automated releases via GitHub Actions:
+
+1. **Make changes** and commit them
+2. **Create a release**: `npm run release`
+   - This will bump the version, create a git tag, and push to GitHub
+   - GitHub Actions will automatically publish to npm
+
+**Manual release** (if needed):
+```bash
+npm version patch  # or minor/major
+git push --follow-tags
+```
+
 ## License
 
 MIT - see [LICENSE](LICENSE) file for details

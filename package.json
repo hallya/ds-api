@@ -13,7 +13,12 @@
     "list:json": "node bin/cli.js list --json",
     "remove": "node bin/cli.js remove",
     "purge": "node bin/cli.js purge",
-    "info": "node bin/cli.js info"
+    "info": "node bin/cli.js info",
+    "release": "npm run release:version && npm run release:publish",
+    "release:version": "npm version patch",
+    "release:publish": "npm publish --access public",
+    "prepublishOnly": "npm run test",
+    "test": "echo 'No tests yet - add tests here'"
   },
   "keywords": [
     "synology",
