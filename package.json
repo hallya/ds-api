@@ -15,7 +15,7 @@
     "purge": "node bin/cli.js purge",
     "info": "node bin/cli.js info",
     "release": "npm run release:version && git push --follow-tags",
-    "release:version": "npm version patch",
+    "release:version": "standard-version",
     "release:publish": "npm publish --access public",
     "prepublishOnly": "npm run test",
     "test": "echo '🧪 Basic syntax check - no automated tests yet, but code compiles successfully'"
@@ -54,5 +54,8 @@
     "dotenv": "^17.2.3",
     "joi": "^18.0.1",
     "winston": "^3.18.3"
+  },
+  "devDependencies": {
+    "standard-version": "^9.5.0"
   }
 }
