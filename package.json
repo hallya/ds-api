@@ -2,6 +2,10 @@
   "name": "@hallya/ds-api",
   "version": "1.0.10",
   "description": "A Node.js library for interacting with Synology Download Station API",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
   "main": "index.js",
   "type": "module",
   "bin": {

@@ -2,24 +2,42 @@ name: release
 on:
   push:
     branches: [main]
+
 jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      id-token: write # pour provenance npm
+      id-token: write
+      issues: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.14.0
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'pnpm'
-        # provenance pour npm (npm >=9.5)
-        # setup-node ajoute automatiquement l'attestation avec id-token
-      - run: corepack enable
+          node-version: 22
+
+      - run: corepack enable && corepack prepare pnpm@9 --activate
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - run: |
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          npm ping --registry=https://registry.npmjs.org
+          npm whoami --registry=https://registry.npmjs.org
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+
       - run: pnpm install --frozen-lockfile
+
       - run: npx semantic-release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
