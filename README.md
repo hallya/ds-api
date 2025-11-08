@@ -168,8 +168,8 @@ ds-api list --json
 # Remove torrents by title (comma-separated)
 ds-api remove "title1,title2"
 
-# Purge torrents by size limit (in GB)
-# Removes oldest/lowest-ratio torrents until total size is below limit
+# Purge torrents to keep only specified total size (in GB)
+# Removes oldest/lowest-ratio torrents until total size is at or below limit
 ds-api purge "10.5"
 
 # Dry run purge (simulation - shows what would be deleted)
@@ -183,7 +183,7 @@ ds-api info "torrent_title"
 
 **Daily cleanup**: Remove torrents when disk space gets low
 ```bash
-ds-api purge "50"  # Keep only 50GB of torrents
+ds-api purge "50"  # Purge to keep only 50GB total
 ```
 
 **Selective removal**: Remove specific completed torrents
