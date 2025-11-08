@@ -14,6 +14,7 @@
     "remove": "node bin/cli.js remove",
     "purge": "node bin/cli.js purge",
     "info": "node bin/cli.js info",
+    "commit": "cz",
     "release": "npm run release:version && git push --follow-tags",
     "release:version": "standard-version",
     "release:publish": "npm publish --access public",
@@ -56,6 +57,13 @@
     "winston": "^3.18.3"
   },
   "devDependencies": {
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
     "standard-version": "^9.5.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   }
 }
