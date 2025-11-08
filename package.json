@@ -44,12 +44,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hallya/synology-download-station-api.git"
+    "url": "https://github.com/hallya/ds-api.git"
   },
   "bugs": {
-    "url": "https://github.com/hallya/synology-download-station-api/issues"
+    "url": "https://github.com/hallya/ds-api/issues"
   },
-  "homepage": "https://github.com/hallya/synology-download-station-api#readme",
+  "homepage": "https://github.com/hallya/ds-api#readme",
   "dependencies": {
     "dotenv": "^17.2.3",
     "joi": "^18.0.1",
