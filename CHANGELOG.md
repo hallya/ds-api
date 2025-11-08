@@ -5,7 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2024-11-08
+
+### Changed
+- Added npx support: `npx @hallya/ds-api` replaces `ds-torrents`
+
 ## [1.0.0] - 2024-11-08
+
+### Changed
+- Package renamed from `@hallya/synology-download-station-api` to `@hallya/ds-api` for conciseness
+- Updated Node.js requirement to 18.0.0 for better performance and security
+- Improved documentation with quick setup guide
+- Standardized all error messages to English
+- Fixed syntax error in logger configuration
+- Removed debug console.log statements from production code
 
 ### Added
 - Initial release of Synology Download Station API library

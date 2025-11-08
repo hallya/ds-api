@@ -151,7 +151,9 @@ First, install the package globally or run it using npx:
 ```bash
 npm install -g @hallya/ds-api
 # or
-npx synology-download-station-api
+npx @hallya/ds-api
+```
+
 ```
 
 #### Commands

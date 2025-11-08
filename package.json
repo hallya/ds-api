@@ -1,11 +1,11 @@
 {
   "name": "@hallya/ds-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Node.js library for interacting with Synology Download Station API",
   "main": "index.js",
   "type": "module",
   "bin": {
-    "ds-torrents": "./bin/cli.js"
+    "@hallya/ds-api": "./bin/cli.js"
   },
   "scripts": {
     "start": "node bin/cli.js",
