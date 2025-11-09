@@ -13,31 +13,21 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
 
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: "pnpm"
+          registry-url: "https://registry.npmjs.org"
 
-      - run: corepack enable && corepack prepare pnpm@9 --activate
-
-      - uses: actions/cache@v4
-        with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - run: |
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-          npm ping --registry=https://registry.npmjs.org
-          npm whoami --registry=https://registry.npmjs.org
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
+      - uses: pnpm/action-setup@v4
+        with: { version: 9 }
 
       - run: pnpm install --frozen-lockfile
-
-      - run: npx semantic-release
+      - run: pnpm -s test
+      - name: Release
         env:
           GITHUB_TOKEN: ${{ github.token }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release
