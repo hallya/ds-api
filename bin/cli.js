@@ -5,6 +5,11 @@ import { CLIHandler } from '../lib/cli-handler.js';
 import logger from '../lib/logger.js';
 
 async function main() {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
+  const packageJson = JSON.parse(readFileSync(join(__dirname, '..', 'package.json'), 'utf8'));
+  logger.info(`Starting ds-api version ${packageJson.version}`);
+
   const args = process.argv.slice(2);
   const isDryRun = args.includes('--dry-run');
   const isJson = args.includes('--json');
