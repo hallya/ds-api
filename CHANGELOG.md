@@ -1,3 +1,9 @@
+## [1.1.1](https://github.com/hallya/ds-api/compare/v1.1.0...v1.1.1) (2025-11-11)
+
+### CI
+
+* update semantic-release configuration ([65360b6](https://github.com/hallya/ds-api/commit/65360b61c2cadedfc5b153872f1f76fa20b1dcb4))
+
 # [1.1.0](https://github.com/hallya/ds-api/compare/v1.0.12...v1.1.0) (2025-11-11)
 
 
