@@ -1,3 +1,9 @@
+## [1.2.1](https://github.com/hallya/ds-api/compare/v1.2.0...v1.2.1) (2025-11-11)
+
+### Bug Fixes
+
+* **synology-ds:** use path.join() to properly construct file paths ([548807d](https://github.com/hallya/ds-api/commit/548807d6b6ebce9f88a909c8cd0f3eb0b9cae3ba))
+
 ## [1.2.0](https://github.com/hallya/ds-api/compare/v1.1.1...v1.2.0) (2025-11-11)
 
 ### Features
