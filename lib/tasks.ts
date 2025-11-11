@@ -50,7 +50,7 @@ export async function removeTasks(
     force_complete: forceComplete ? "true" : "false",
     _sid: sid,
   });
-  return data as DeleteResponse;
+  return data as DeleteTasksResponse;
 }
 
 /**
@@ -75,7 +75,7 @@ export async function removeTask(
     force_complete: forceComplete ? "true" : "false",
     _sid: sid,
   });
-  return data as DeleteResponse;
+  return data as DeleteTasksResponse;
 }
 
 /**

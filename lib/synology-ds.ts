@@ -10,14 +10,14 @@ import {
   type ListTasksResponse,
   type DeleteTasksResponse,
 } from "./tasks.ts";
-import type { DeleteTaskResult } from "./types.ts";
+import type { DeleteTaskResult, PurgeResult } from "./types.ts";
 import logger from "./logger.ts";
 import config, { type Config } from "./config.ts";
 import { retry } from "./retry.ts";
 import { join } from "std/path/mod.ts";
 
 /**
- * Options for SynologyDS constructor.
+ * Options for SynologyDS constructor (internal type).
  */
 export interface SynologyDSOptions {
   baseUrl?: string;
@@ -26,16 +26,6 @@ export interface SynologyDSOptions {
   path?: string;
   basePath?: string;
   config?: Config;
-}
-
-export interface PurgeResult {
-  message: string;
-  tasksToPurge: Task[];
-  totalSize: number;
-  dryRun?: boolean;
-  apiDeleteResults?: DeleteTaskResult[];
-  successfulCount?: number;
-  failedCount?: number;
 }
 
 /**
