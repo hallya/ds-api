@@ -1,3 +1,26 @@
+## [1.2.0](https://github.com/hallya/ds-api/compare/v1.1.1...v1.2.0) (2025-11-11)
+
+### Features
+
+* **synology-ds:** add concurrency protection for authenticate() and getTasks() ([c74b37c](https://github.com/hallya/ds-api/commit/c74b37c506a4299a339d633656f3cbcd8b90d2a8))
+
+### Bug Fixes
+
+* **security:** improve path validation using path.resolve() ([c5b8c40](https://github.com/hallya/ds-api/commit/c5b8c40008d8093a21cbe77932b2763316fc2088))
+* **security:** replace exec() with fs.rm() to prevent shell injection ([f2f0b98](https://github.com/hallya/ds-api/commit/f2f0b98f8d406b093077e2ffc35ff258bd24e913))
+
+### Refactoring
+
+* extract helpers and improve dry-run logging ([642b9ea](https://github.com/hallya/ds-api/commit/642b9ea91d5dac199e330f6e610bd1e754bc851b))
+* **synology-ds:** extract logging methods and improve code consistency ([9bb4133](https://github.com/hallya/ds-api/commit/9bb4133beb0ec1a2f6d187bf3cb4eea9d3726014))
+* **synology-ds:** handle partial deletion errors gracefully ([f6a6b5a](https://github.com/hallya/ds-api/commit/f6a6b5a603522341ecfe20a8de58817bcbd205b5))
+* **synology-ds:** inject config dependencies for testability ([570a7c4](https://github.com/hallya/ds-api/commit/570a7c4915a9596fe2d132624cb92d45f54a92ce))
+* **synology-ds:** use ES2022 private methods ([#method](https://github.com/hallya/ds-api/issues/method)Name) ([db51e37](https://github.com/hallya/ds-api/commit/db51e37c73b1f81b2fdc1699206b5f08499fbd5c)), closes [#methodName](https://github.com/hallya/ds-api/issues/methodName)
+
+### Documentation
+
+* **synology-ds:** document size formatting choice (1000 vs 1024) ([fc40a22](https://github.com/hallya/ds-api/commit/fc40a2272b30a3289137782623bbc9d3762a22c5))
+
 ## [1.1.1](https://github.com/hallya/ds-api/compare/v1.1.0...v1.1.1) (2025-11-11)
 
 ### CI
