@@ -1,4 +1,4 @@
-import * as log from "std/log/mod.ts";
+import * as log from "std/log";
 import config from "./config.ts";
 
 /**
@@ -7,12 +7,12 @@ import config from "./config.ts";
  *
  * Supported log levels: error, warn, info, debug (default: info).
  */
-const logLevel = config.logLevel as log.LevelName;
+const logLevel = config.logLevel || "INFO";
 
 await log.setup({
   handlers: {
     console: new log.ConsoleHandler(logLevel, {
-      formatter: (record) => {
+      formatter: (record: log.LogRecord) => {
         const timestamp = new Date(record.datetime).toISOString();
         const level = record.levelName;
         const msg = record.msg;

@@ -1,3 +1,4 @@
+import type { LevelName } from "std/log";
 import { z } from "zod";
 
 /**
@@ -8,7 +9,7 @@ const configSchema = z.object({
   SYNOLOGY_PASSWORD: z.string().min(1, "SYNOLOGY_PASSWORD is required"),
   SYNOLOGY_BASE_PATH: z.string().optional(),
   SYNOLOGY_DISABLE_SSL_VERIFICATION: z.enum(["true", "false"]).optional(),
-  LOG_LEVEL: z.enum(["error", "warn", "info", "debug"]).optional(),
+  LOG_LEVEL: z.enum(["ERROR", "WARN", "INFO", "DEBUG"]).optional(),
   NAS_URL: z.string().url().optional(),
   RETRY_ATTEMPTS: z.coerce.number().int().min(0).optional(),
   RETRY_DELAY: z.coerce.number().int().min(0).optional(),
@@ -40,7 +41,7 @@ export interface Config {
   /** Whether to disable SSL verification. */
   synologyDisableSslVerification: boolean;
   /** The logging level (error, warn, info, debug). */
-  logLevel: string;
+  logLevel: LevelName;
   /** The NAS URL for API calls. */
   nasUrl?: string;
   /** Number of retry attempts for API calls. */
@@ -54,7 +55,7 @@ const config: Config = {
   synologyPassword: value.SYNOLOGY_PASSWORD,
   synologyBasePath: value.SYNOLOGY_BASE_PATH,
   synologyDisableSslVerification: value.SYNOLOGY_DISABLE_SSL_VERIFICATION === "true",
-  logLevel: value.LOG_LEVEL || "info",
+  logLevel: value.LOG_LEVEL || "INFO",
   nasUrl: value.NAS_URL,
   retryAttempts: value.RETRY_ATTEMPTS || 3,
   retryDelay: value.RETRY_DELAY || 1000,
