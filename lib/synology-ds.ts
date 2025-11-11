@@ -8,8 +8,9 @@ import {
   calculateTotalSize,
   type Task,
   type ListTasksResponse,
-  type DeleteResponse,
+  type DeleteTasksResponse,
 } from "./tasks.ts";
+import type { DeleteTaskResult } from "./types.ts";
 import logger from "./logger.ts";
 import config, { type Config } from "./config.ts";
 import { retry } from "./retry.ts";
@@ -27,15 +28,12 @@ export interface SynologyDSOptions {
   config?: Config;
 }
 
-/**
- * Purge result structure.
- */
 export interface PurgeResult {
   message: string;
   tasksToPurge: Task[];
   totalSize: number;
   dryRun?: boolean;
-  apiDeleteResults?: Array<{ id: string; error: number }>;
+  apiDeleteResults?: DeleteTaskResult[];
   successfulCount?: number;
   failedCount?: number;
 }
@@ -196,7 +194,7 @@ export class SynologyDS {
    * @returns A promise that resolves to the deletion results.
    * @throws If not authenticated or if the request fails.
    */
-  async removeTasksByIds(ids: string[], forceComplete = false): Promise<Array<{ id: string; error: number }>> {
+  async removeTasksByIds(ids: string[], forceComplete = false): Promise<DeleteTaskResult[]> {
     if (ids.length === 0) {
       throw new Error("No valid task IDs found for the provided titles");
     }
@@ -297,9 +295,9 @@ export class SynologyDS {
    * @returns A promise that resolves to an object with successful and failed deletion results.
    */
   async performApiDeletions(tasksToPurge: Task[]): Promise<{
-    successful: Array<{ id: string; error: number }>;
-    failed: Array<{ id: string; error: number }>;
-    all: Array<{ id: string; error: number }>;
+    successful: DeleteTaskResult[];
+    failed: DeleteTaskResult[];
+    all: DeleteTaskResult[];
   }> {
     const ids = tasksToPurge.map((task) => task.id);
 
@@ -337,7 +335,7 @@ export class SynologyDS {
    * Logs information about failed API deletions.
    * @param failedDeletes - Array of failed deletion results.
    */
-  logFailedDeletions(failedDeletes: Array<{ id: string; error: number }>): void {
+  logFailedDeletions(failedDeletes: DeleteTaskResult[]): void {
     logger.error(`[Step 1/2] API deletion failures (${failedDeletes.length}):`);
     failedDeletes.forEach((f) => {
       const task = this.tasksMap.get(f.id);
@@ -348,9 +346,9 @@ export class SynologyDS {
   }
 
   async performSystemDeletions(deleteResults: {
-    successful: Array<{ id: string; error: number }>;
-    failed: Array<{ id: string; error: number }>;
-    all: Array<{ id: string; error: number }>;
+    successful: DeleteTaskResult[];
+    failed: DeleteTaskResult[];
+    all: DeleteTaskResult[];
   }): Promise<void> {
     const successfulDeletes = deleteResults.successful || [];
 
@@ -435,7 +433,7 @@ export class SynologyDS {
   createFinalResult(
     tasksToPurge: Task[],
     totalSize: number,
-    deleteResults: Array<{ id: string; error: number }>
+    deleteResults: DeleteTaskResult[]
   ): PurgeResult {
     const successfulDeletes = this.#filterSuccessfulDeletes(deleteResults);
     const failedDeletes = this.#filterFailedDeletes(deleteResults);
@@ -484,7 +482,7 @@ export class SynologyDS {
    * @returns A promise that resolves to the deletion results.
    * @throws If no valid task IDs are found.
    */
-  async removeTasksByTitles(titles: string): Promise<Array<{ id: string; error: number }>> {
+  async removeTasksByTitles(titles: string): Promise<DeleteTaskResult[]> {
     const titleList = titles.split(",").map((t) => t.trim());
     logger.info(`Starting deletion by titles: ${titleList.length} title(s) provided`);
 
@@ -573,7 +571,7 @@ export class SynologyDS {
    * @param deleteResults - Array of deletion results.
    * @returns Array of successful deletion results.
    */
-  #filterSuccessfulDeletes(deleteResults: Array<{ id: string; error: number }>): Array<{ id: string; error: number }> {
+  #filterSuccessfulDeletes(deleteResults: DeleteTaskResult[]): DeleteTaskResult[] {
     return deleteResults.filter((result) => result.error === 0);
   }
 
@@ -582,7 +580,7 @@ export class SynologyDS {
    * @param deleteResults - Array of deletion results.
    * @returns Array of failed deletion results.
    */
-  #filterFailedDeletes(deleteResults: Array<{ id: string; error: number }>): Array<{ id: string; error: number }> {
+  #filterFailedDeletes(deleteResults: DeleteTaskResult[]): DeleteTaskResult[] {
     return deleteResults.filter((result) => result.error !== 0);
   }
 

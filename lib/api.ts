@@ -14,9 +14,9 @@ export async function api(path: string, paramsObj: Record<string, string | numbe
     }
 
     const url = new URL(path, config.nasUrl);
-    Object.entries(paramsObj).forEach(([k, v]) =>
-      url.searchParams.set(k, String(v))
-    );
+    for (const [k, v] of Object.entries(paramsObj)) {
+      url.searchParams.set(k, String(v));
+    }
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout

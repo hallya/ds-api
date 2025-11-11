@@ -1,31 +1,8 @@
 import { api } from "./api.ts";
+import type { ApiInfo, LoginResponse } from "./types.ts";
 
-/**
- * API information structure from Synology NAS.
- */
-export interface ApiInfo {
-  "SYNO.API.Auth"?: {
-    maxVersion?: number;
-    version?: number;
-  };
-  "SYNO.DownloadStation.Task"?: {
-    maxVersion?: number;
-    version?: number;
-  };
-}
-
-/**
- * Login response structure.
- */
-export interface LoginResponse {
-  success: boolean;
-  data?: {
-    sid: string;
-  };
-  error?: {
-    code: number;
-  };
-}
+// Re-export types for convenience
+export type { ApiInfo, LoginResponse };
 
 /**
  * Retrieves API information from the Synology NAS, including available APIs and their versions.

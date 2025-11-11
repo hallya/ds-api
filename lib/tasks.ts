@@ -1,78 +1,15 @@
 import { api } from "./api.ts";
+import type {
+  Task,
+  TaskDetail,
+  TaskTransfer,
+  ListTasksResponse,
+  DeleteTasksResponse,
+} from "./types.ts";
 import type { ApiInfo } from "./auth.ts";
 
-/**
- * Task detail information structure.
- */
-export interface TaskDetail {
-  completed_time: number;
-  connected_leechers: number;
-  connected_peers: number;
-  connected_seeders: number;
-  create_time: number;
-  destination: string;
-  seedelapsed: number;
-  started_time: number;
-  total_peers: number;
-  total_pieces: number;
-  unzip_password: string;
-  uri: string;
-  waiting_seconds: number;
-}
-
-/**
- * Task transfer information structure.
- */
-export interface TaskTransfer {
-  downloaded_pieces: number;
-  size_downloaded: number;
-  size_uploaded: number;
-  speed_download: number;
-  speed_upload: number;
-}
-
-/**
- * Task structure from Synology Download Station API.
- */
-export interface Task {
-  id: string;
-  size: number;
-  status: string;
-  title: string;
-  type: string;
-  username: string;
-  additional?: {
-    detail?: TaskDetail;
-    transfer?: TaskTransfer;
-  };
-}
-
-/**
- * API response structure for list tasks.
- */
-export interface ListTasksResponse {
-  success: boolean;
-  data?: {
-    tasks?: Task[];
-  };
-  error?: {
-    code: number;
-  };
-}
-
-/**
- * API response structure for delete tasks.
- */
-export interface DeleteResponse {
-  success: boolean;
-  data?: Array<{
-    id: string;
-    error: number;
-  }>;
-  error?: {
-    code: number;
-  };
-}
+// Re-export types for convenience
+export type { Task, TaskDetail, TaskTransfer, ListTasksResponse, DeleteTasksResponse };
 
 /**
  * Lists all download tasks from the Synology Download Station.
@@ -104,7 +41,7 @@ export async function removeTasks(
   idsCsv: string,
   forceComplete = false,
   taskVersion = "1"
-): Promise<DeleteResponse> {
+): Promise<DeleteTasksResponse> {
   const { data } = await api("/webapi/DownloadStation/task.cgi", {
     api: "SYNO.DownloadStation.Task",
     version: taskVersion,
@@ -129,7 +66,7 @@ export async function removeTask(
   id: string,
   forceComplete = false,
   taskVersion = "1"
-): Promise<DeleteResponse> {
+): Promise<DeleteTasksResponse> {
   const { data } = await api("/webapi/DownloadStation/task.cgi", {
     api: "SYNO.DownloadStation.Task",
     version: taskVersion,
