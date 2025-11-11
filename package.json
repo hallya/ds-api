@@ -65,6 +65,7 @@
     "@semantic-release/npm": "^13.1.1",
     "@semantic-release/release-notes-generator": "^14.1.0",
     "commitizen": "^4.3.1",
+    "conventional-changelog-conventionalcommits": "^9.1.0",
     "semantic-release": "^25.0.2"
   },
   "config": {
