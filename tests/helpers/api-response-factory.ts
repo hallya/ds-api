@@ -7,7 +7,7 @@ import type {
   DeleteTasksResponse,
   DeleteTaskResult,
   Task,
-} from "../../lib/types.ts";
+} from "../../lib/types/index.ts";
 import { createTaskList } from "./task-factory.ts";
 
 /**

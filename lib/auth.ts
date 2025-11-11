@@ -1,5 +1,5 @@
 import { api } from "./api.ts";
-import type { ApiInfo, LoginResponse } from "./types.ts";
+import type { ApiInfo, LoginResponse } from "./types/index.ts";
 
 // Re-export types for convenience
 export type { ApiInfo, LoginResponse };

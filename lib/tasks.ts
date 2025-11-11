@@ -5,7 +5,7 @@ import type {
   TaskTransfer,
   ListTasksResponse,
   DeleteTasksResponse,
-} from "./types.ts";
+} from "./types/index.ts";
 import type { ApiInfo } from "./auth.ts";
 
 // Re-export types for convenience

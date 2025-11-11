@@ -10,7 +10,7 @@ import {
   type ListTasksResponse,
   type DeleteTasksResponse,
 } from "./tasks.ts";
-import type { DeleteTaskResult, PurgeResult } from "./types.ts";
+import type { DeleteTaskResult, PurgeResult } from "./types/index.ts";
 import logger from "./logger.ts";
 import config, { type Config } from "./config.ts";
 import { retry } from "./retry.ts";

@@ -4,7 +4,7 @@ import type {
   TaskTransfer,
   TaskStatus,
   TaskType,
-} from "../../lib/types.ts";
+} from "../../lib/types/index.ts";
 
 /**
  * Factory for creating realistic test tasks based on actual torrents.json data.
