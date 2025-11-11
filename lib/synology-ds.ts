@@ -7,14 +7,12 @@ import {
   selectTasksForPurge,
   calculateTotalSize,
   type Task,
-  type ListTasksResponse,
-  type DeleteTasksResponse,
 } from "./tasks.ts";
 import type { DeleteTaskResult, PurgeResult } from "./types/index.ts";
 import logger from "./logger.ts";
 import config, { type Config } from "./config.ts";
 import { retry } from "./retry.ts";
-import { join } from "std/path/mod.ts";
+import { join } from "std/path";
 
 /**
  * Options for SynologyDS constructor (internal type).
@@ -63,7 +61,7 @@ export class SynologyDS {
     this.username = options.username ?? injectedConfig.synologyUsername;
     this.password = options.password ?? injectedConfig.synologyPassword;
     this.path = options.path ?? injectedConfig.synologyBasePath;
-    this.basePath = options.basePath ?? injectedConfig.synologyBasePath ?? this.path || "";
+    this.basePath = options.basePath ?? injectedConfig.synologyBasePath ?? (this.path || "");
   }
 
   /**
