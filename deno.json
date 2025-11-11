@@ -37,9 +37,9 @@
   },
   "test": {
     "include": ["tests/**/*.test.ts"],
-    "exclude": ["node_modules/"],
+    "exclude": ["node_modules/", "coverage/"],
     "coverage": {
-      "exclude": ["tests/", "node_modules/"]
+      "exclude": ["tests/", "node_modules/", "coverage/", "bin/"]
     },
     "timeout": 30000
   }

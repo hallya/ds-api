@@ -18,7 +18,7 @@ import type {
 export function createTaskDetail(overrides: Partial<TaskDetail> = {}): TaskDetail {
   const now = Math.floor(Date.now() / 1000);
   const createTime = overrides.create_time ?? now - 86400 * 7; // 7 days ago
-  const completedTime = overrides.completed_time ?? (overrides.comeed_time === 0 ? 0 : now - 86400 * 2); // 2 days ago or 0
+  const completedTime = overrides.completed_time ?? (overrides.completed_time === 0 ? 0 : now - 86400 * 2); // 2 days ago or 0
 
   return {
     completed_time: completedTime,
