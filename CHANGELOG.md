@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/hallya/ds-api/compare/v1.0.12...v1.1.0) (2025-11-11)
+
+
+### Features
+
+* **deletion:** improve logging precision for each deletion step ([e287e0d](https://github.com/hallya/ds-api/commit/e287e0db348dcbdeb140d9f951291454f6562d51))
+
 # Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
