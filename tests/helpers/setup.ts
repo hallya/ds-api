@@ -1,49 +1,9 @@
 /**
- * Test setup and utilities for Deno tests.
- * Provides common mocks and configuration for test files.
+ * Test utilities for Deno tests.
+ * 
+ * Note: Test setup (environment variables and logger) is handled by tests/setup.ts
+ * which should be imported first in all test files.
  */
-
-import * as log from "std/log/mod.ts";
-
-/**
- * Sets up a test logger that suppresses output during tests.
- * This prevents test logs from cluttering the test output.
- */
-export function setupTestLogger(): void {
-  // Configure logger to use a minimal handler that doesn't output
-  log.setup({
-    handlers: {
-      console: new log.ConsoleHandler("ERROR", {
-        formatter: () => "", // Suppress all log output during tests
-      }),
-    },
-    loggers: {
-      default: {
-        level: "ERROR",
-        handlers: ["console"],
-      },
-    },
-  });
-}
-
-/**
- * Restores the default logger configuration.
- * Call this in test cleanup if needed.
- */
-export function restoreLogger(): void {
-  // Reset to default configuration
-  log.setup({
-    handlers: {
-      console: new log.ConsoleHandler("INFO"),
-    },
-    loggers: {
-      default: {
-        level: "INFO",
-        handlers: ["console"],
-      },
-    },
-  });
-}
 
 /**
  * Creates a mock configuration object for testing.
