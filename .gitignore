@@ -1,3 +1,5 @@
 /node_modules
-
+/_files_to_analyse_for_cursor
 .env*
+deno.lock
+coverage/

@@ -1,26 +1,26 @@
 {
   "name": "@hallya/ds-api",
   "version": "1.2.1",
-  "description": "A Node.js library for interacting with Synology Download Station API",
+  "description": "A Deno library for interacting with Synology Download Station API",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
-  "main": "index.js",
+  "main": "index.ts",
   "type": "module",
   "bin": {
-    "ds-api": "./bin/cli.js"
+    "ds-api": "./bin/cli.ts"
   },
   "scripts": {
-    "start": "node bin/cli.js",
-    "list": "node bin/cli.js list",
-    "list:json": "node bin/cli.js list --json",
-    "remove": "node bin/cli.js remove",
-    "purge": "node bin/cli.js purge",
-    "info": "node bin/cli.js info",
+    "start": "deno run --allow-all bin/cli.ts",
+    "list": "deno run --allow-all bin/cli.ts list",
+    "list:json": "deno run --allow-all bin/cli.ts list --json",
+    "remove": "deno run --allow-all bin/cli.ts remove",
+    "purge": "deno run --allow-all bin/cli.ts purge",
+    "info": "deno run --allow-all bin/cli.ts info",
     "commit": "cz",
-    "prepublishOnly": "npm run test",
-    "test": "echo '🧪 Basic syntax check - no automated tests yet, but code compiles successfully'"
+    "prepublishOnly": "deno test --allow-all",
+    "test": "deno test --allow-all"
   },
   "keywords": [
     "synology",
@@ -35,15 +35,13 @@
   "files": [
     "lib/",
     "bin/",
-    "index.js",
+    "index.ts",
+    "deno.json",
     "LICENSE",
     "README.md"
   ],
   "author": "Lucien Dulac",
   "license": "MIT",
-  "engines": {
-    "node": ">=22.14.0"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/hallya/ds-api.git"
@@ -52,11 +50,7 @@
     "url": "https://github.com/hallya/ds-api/issues"
   },
   "homepage": "https://github.com/hallya/ds-api#readme",
-  "dependencies": {
-    "dotenv": "^17.2.3",
-    "joi": "^18.0.1",
-    "winston": "^3.18.3"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
