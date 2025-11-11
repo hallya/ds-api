@@ -1,3 +1,28 @@
+## [1.3.0](https://github.com/hallya/ds-api/compare/v1.2.1...v1.3.0) (2025-11-11)
+
+### Features
+
+* **config:** add import maps for test setup and mocking libraries ([e4cf55b](https://github.com/hallya/ds-api/commit/e4cf55b3c92e29316f776bbd923cd1c7b71f0802))
+* **deno:** migrate to Deno (step 1) ([6da18d1](https://github.com/hallya/ds-api/commit/6da18d199d9c5682780d3a0b8dde2f0ff523d8a9))
+* **tests:** add centralized test setup file ([f857859](https://github.com/hallya/ds-api/commit/f857859abcaa5f275cfb91bdfa8110b92da107d5))
+* **tests:** add test factories for tasks and API responses (step 3) ([ac05b64](https://github.com/hallya/ds-api/commit/ac05b64296288bc076351578ced79bbf20f54561))
+* **tests:** configure Deno tests and setup helpers (step 4) ([77b3a64](https://github.com/hallya/ds-api/commit/77b3a6481d29aff57cda8dcc0fee21425a68359e))
+* **types:** add TypeScript types based on torrents.json (step 2) ([93020d0](https://github.com/hallya/ds-api/commit/93020d077a00f1af04b54580c6d74f6e39cc3e4a))
+
+### Refactoring
+
+* **config:** improve log level typing and normalization ([4d2c8df](https://github.com/hallya/ds-api/commit/4d2c8dfaacbf96e5016455f0ee6241b0ddce7d07))
+* **lib:** minor import and formatting improvements ([ed1d6fa](https://github.com/hallya/ds-api/commit/ed1d6faa18fd13e50ac1d852d53af9b2501d26d0))
+* **tests:** add constants and improve createTaskDetail normalization ([4723cbd](https://github.com/hallya/ds-api/commit/4723cbd0aaaf8712e8fb55aaba2d39d2caadf2fa))
+* **tests:** update unit tests to use [@test-setup](https://github.com/test-setup) and new factories ([90bda6e](https://github.com/hallya/ds-api/commit/90bda6e7143c76b0142e87f61f9b54968c9e7d6f))
+* **types:** remove lib/types.ts and update imports ([5b43110](https://github.com/hallya/ds-api/commit/5b43110e66e7a910d3d2caad118bb5cd7f6cc9a3))
+* **types:** separate API types from internal types ([ebf7a52](https://github.com/hallya/ds-api/commit/ebf7a5267f9a9e016a9ab8aaa8ddff496e0f1701))
+
+### Tests
+
+* **integration:** add integration tests for cli-handler and synology-ds ([c54ef49](https://github.com/hallya/ds-api/commit/c54ef4971d2cdc51625e88f64c8884db7898051f))
+* **unit:** ajouter tests unitaires avec structure t.step ([1d24989](https://github.com/hallya/ds-api/commit/1d2498938cf1b39408d3dc015bc5702d3f10fd5b))
+
 ## [1.2.1](https://github.com/hallya/ds-api/compare/v1.2.0...v1.2.1) (2025-11-11)
 
 ### Bug Fixes
