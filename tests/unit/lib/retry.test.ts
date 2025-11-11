@@ -1,9 +1,7 @@
+import "@test-setup";
+
 import { assertEquals, assertRejects } from "https://deno.land/std@0.224.0/assert/mod.ts";
 import { retry } from "../../../lib/retry.ts";
-import { wait } from "../../helpers/setup.ts";
-import { setupTestLogger } from "../../helpers/setup.ts";
-
-setupTestLogger();
 
 Deno.test("retry", async (t) => {
   await t.step("succeeds on first attempt", async () => {

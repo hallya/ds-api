@@ -1,3 +1,5 @@
+import "@test-setup";
+
 import { assertEquals, assertThrows } from "https://deno.land/std@0.224.0/assert/mod.ts";
 import {
   validateRemoveArgs,
@@ -6,9 +8,6 @@ import {
   formatBytes,
   formatTimestamp,
 } from "../../../lib/cli.ts";
-import { setupTestLogger } from "../../helpers/setup.ts";
-
-setupTestLogger();
 
 Deno.test("cli", async (t) => {
   await t.step("validateRemoveArgs", async (t) => {

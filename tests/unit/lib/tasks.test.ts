@@ -1,7 +1,6 @@
-import {
-	assertEquals,
-	assertThrows,
-} from "https://deno.land/std@0.224.0/assert/mod.ts";
+import "@test-setup";
+
+import { assertEquals } from "https://deno.land/std@0.224.0/assert/mod.ts";
 import {
 	sortTasksByUploadAndTime,
 	calculateTotalSize,
@@ -10,101 +9,28 @@ import {
 } from "../../../lib/tasks.ts";
 import {
 	createTask,
-	createTaskList,
-	createTaskWithUpload,
 	createTaskWithSize,
-	createFinishedTask,
-	createTaskDetail,
-	createTaskTransfer,
+	createTaskForSortTest,
+	createTaskForPurgeTest,
+	createMinimalTaskTransfer,
+	createLargeTaskDataset,
 } from "../../helpers/task-factory.ts";
 import type { ApiInfo } from "../../../lib/types/api.ts";
-import { setupTestLogger } from "../../helpers/setup.ts";
-
-setupTestLogger();
 
 Deno.test("tasks", async (t) => {
 	await t.step("sortTasksByUploadAndTime", async (t) => {
 		await t.step("sorts by upload then completion time", () => {
-			const task1 = createTaskWithUpload(1000, {
+			const task1 = createTaskForSortTest(1000, 1000, {
 				id: "task1",
-				additional: {
-					detail: {
-						completed_time: 1000,
-						create_time: 0,
-						destination: "",
-						seedelapsed: 0,
-						started_time: 0,
-						total_peers: 0,
-						total_pieces: 0,
-						unzip_password: "",
-						uri: "",
-						waiting_seconds: 0,
-						connected_leechers: 0,
-						connected_peers: 0,
-						connected_seeders: 0,
-					},
-					transfer: {
-						size_uploaded: 1000,
-						size_downloaded: 5000,
-						downloaded_pieces: 0,
-						speed_download: 0,
-						speed_upload: 0,
-					},
-				},
+				size: 5000,
 			});
-			const task2 = createTaskWithUpload(500, {
+			const task2 = createTaskForSortTest(500, 2000, {
 				id: "task2",
-				additional: {
-					detail: {
-						completed_time: 2000,
-						create_time: 0,
-						destination: "",
-						seedelapsed: 0,
-						started_time: 0,
-						total_peers: 0,
-						total_pieces: 0,
-						unzip_password: "",
-						uri: "",
-						waiting_seconds: 0,
-						connected_leechers: 0,
-						connected_peers: 0,
-						connected_seeders: 0,
-					},
-					transfer: {
-						size_uploaded: 500,
-						size_downloaded: 5000,
-						downloaded_pieces: 0,
-						speed_download: 0,
-						speed_upload: 0,
-					},
-				},
+				size: 5000,
 			});
-			const task3 = createTaskWithUpload(1000, {
+			const task3 = createTaskForSortTest(1000, 500, {
 				id: "task3",
-				additional: {
-					detail: {
-						completed_time: 500,
-						create_time: 0,
-						destination: "",
-						seedelapsed: 0,
-						started_time: 0,
-						total_peers: 0,
-						total_pieces: 0,
-						unzip_password: "",
-						uri: "",
-						waiting_seconds: 0,
-						connected_leechers: 0,
-						connected_peers: 0,
-						connected_seeders: 0,
-					},
-					transfer: {
-						size_uploaded: 1000,
-						size_downloaded: 5000,
-						downloaded_pieces: 0,
-						speed_download: 0,
-						speed_upload: 0,
-					},
-				},
+				size: 5000,
 			});
 
 			const tasks = [task1, task2, task3];
@@ -119,13 +45,7 @@ Deno.test("tasks", async (t) => {
 			const task1 = createTask({
 				id: "task1",
 				additional: {
-					transfer: {
-						size_uploaded: 0,
-						size_downloaded: 0,
-						downloaded_pieces: 0,
-						speed_download: 0,
-						speed_upload: 0,
-					},
+					transfer: createMinimalTaskTransfer(),
 				},
 			});
 			const task2 = createTask({
@@ -137,6 +57,28 @@ Deno.test("tasks", async (t) => {
 			const sorted = sortTasksByUploadAndTime(tasks);
 
 			assertEquals(sorted.length, 2);
+		});
+
+		await t.step("handles large dataset correctly", () => {
+			const tasks = createLargeTaskDataset(1000);
+			const sorted = sortTasksByUploadAndTime(tasks);
+
+			assertEquals(sorted.length, 1000);
+
+			for (let i = 1; i < sorted.length; i++) {
+				const prevUpload =
+					sorted[i - 1].additional?.transfer?.size_uploaded ?? 0;
+				const currUpload = sorted[i].additional?.transfer?.size_uploaded ?? 0;
+				const prevTime = sorted[i - 1].additional?.detail?.completed_time ?? 0;
+				const currTime = sorted[i].additional?.detail?.completed_time ?? 0;
+
+				assertEquals(
+					prevUpload < currUpload ||
+						(prevUpload === currUpload && prevTime <= currTime),
+					true,
+					`Tasks at index ${i - 1} and ${i} are not correctly sorted`,
+				);
+			}
 		});
 	});
 
@@ -165,29 +107,42 @@ Deno.test("tasks", async (t) => {
 
 			assertEquals(total, 0);
 		});
+
+		await t.step("handles large dataset correctly", () => {
+			const tasks = createLargeTaskDataset(500);
+			const total = calculateTotalSize(tasks);
+
+			assertEquals(total > 0, true);
+			assertEquals(total >= 500 * 1000 * 1000 * 1000, true);
+			assertEquals(total <= 500 * 10 * 1000 * 1000 * 1000, true);
+		});
 	});
 
 	await t.step("selectTasksForPurge", async (t) => {
 		await t.step("selects tasks up to size limit", () => {
 			const tasks = [
-				createTaskWithSize(1 * 1000 * 1000 * 1000),
-				createTaskWithSize(2 * 1000 * 1000 * 1000),
-				createTaskWithSize(3 * 1000 * 1000 * 1000),
+				createTaskForPurgeTest(1, 0.001, 1),
+				createTaskForPurgeTest(2, 0.002, 2),
+				createTaskForPurgeTest(3, 0.003, 3),
 			];
 
 			const selected = selectTasksForPurge(tasks, 2.5);
 
 			assertEquals(selected.length, 2);
+
 			assertEquals(selected[0].size, 1 * 1000 * 1000 * 1000);
 			assertEquals(selected[1].size, 2 * 1000 * 1000 * 1000);
 		});
 
 		await t.step("respects sort order (lowest upload first)", () => {
-			const task1 = createTaskWithUpload(1000, {
+			const now = Math.floor(Date.now() / 1000);
+			const task1 = createTaskForSortTest(1000, now - 86400, {
 				size: 1 * 1000 * 1000 * 1000,
 			});
-			const task2 = createTaskWithUpload(500, { size: 1 * 1000 * 1000 * 1000 });
-			const task3 = createTaskWithUpload(2000, {
+			const task2 = createTaskForSortTest(500, now - 86400, {
+				size: 1 * 1000 * 1000 * 1000,
+			});
+			const task3 = createTaskForSortTest(2000, now - 86400, {
 				size: 1 * 1000 * 1000 * 1000,
 			});
 
@@ -204,6 +159,33 @@ Deno.test("tasks", async (t) => {
 			const selected = selectTasksForPurge([], 10);
 
 			assertEquals(selected.length, 0);
+		});
+
+		await t.step("handles large dataset correctly", () => {
+			const tasks = createLargeTaskDataset(1000);
+			const selected = selectTasksForPurge(tasks, 100);
+
+			assertEquals(selected.length > 0, true);
+			const totalSize = calculateTotalSize(selected);
+
+			assertEquals(totalSize > 0, true);
+			assertEquals(totalSize <= 110 * 1000 * 1000 * 1000, true);
+
+			for (let i = 1; i < selected.length; i++) {
+				const prevUpload =
+					selected[i - 1].additional?.transfer?.size_uploaded ?? 0;
+				const currUpload = selected[i].additional?.transfer?.size_uploaded ?? 0;
+				const prevTime =
+					selected[i - 1].additional?.detail?.completed_time ?? 0;
+				const currTime = selected[i].additional?.detail?.completed_time ?? 0;
+
+				assertEquals(
+					prevUpload < currUpload ||
+						(prevUpload === currUpload && prevTime <= currTime),
+					true,
+					`Selected tasks at index ${i - 1} and ${i} are not correctly sorted`,
+				);
+			}
 		});
 	});
 
