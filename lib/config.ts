@@ -15,18 +15,39 @@ const configSchema = z.object({
   RETRY_DELAY: z.coerce.number().int().min(0).optional(),
 }).passthrough();
 
-const env = Object.fromEntries(
-  Object.entries(Deno.env.toObject()).map(([key, value]) => [key, value])
-);
+let validatedConfig: Config | null = null;
 
-const result = configSchema.safeParse(env);
+function getConfig(): Config {
+  if (validatedConfig) {
+    return validatedConfig;
+  }
 
-if (!result.success) {
-  const errors = result.error.errors.map((e) => `${e.path.join(".")}: ${e.message}`).join(", ");
-  throw new Error(`Configuration validation error: ${errors}`);
+  const env = Object.fromEntries(
+    Object.entries(Deno.env.toObject()).map(([key, value]) => [key, value])
+  );
+
+  const result = configSchema.safeParse(env);
+
+  if (!result.success) {
+    const errors = result.error.errors.map((e) => `${e.path.join(".")}: ${e.message}`).join(", ");
+    throw new Error(`Configuration validation error: ${errors}`);
+  }
+
+  const value = result.data;
+
+  validatedConfig = {
+    synologyUsername: value.SYNOLOGY_USERNAME,
+    synologyPassword: value.SYNOLOGY_PASSWORD,
+    synologyBasePath: value.SYNOLOGY_BASE_PATH,
+    synologyDisableSslVerification: value.SYNOLOGY_DISABLE_SSL_VERIFICATION === "true",
+    logLevel: (value.LOG_LEVEL || "INFO") as LevelName,
+    nasUrl: value.NAS_URL,
+    retryAttempts: value.RETRY_ATTEMPTS || 3,
+    retryDelay: value.RETRY_DELAY || 1000,
+  };
+
+  return validatedConfig;
 }
-
-const value = result.data;
 
 /**
  * Configuration object containing validated environment variables and default values.
@@ -50,16 +71,11 @@ export interface Config {
   retryDelay: number;
 }
 
-const config: Config = {
-  synologyUsername: value.SYNOLOGY_USERNAME,
-  synologyPassword: value.SYNOLOGY_PASSWORD,
-  synologyBasePath: value.SYNOLOGY_BASE_PATH,
-  synologyDisableSslVerification: value.SYNOLOGY_DISABLE_SSL_VERIFICATION === "true",
-  logLevel: value.LOG_LEVEL || "INFO",
-  nasUrl: value.NAS_URL,
-  retryAttempts: value.RETRY_ATTEMPTS || 3,
-  retryDelay: value.RETRY_DELAY || 1000,
-};
+const config = new Proxy({} as Config, {
+  get(_target, prop) {
+    return getConfig()[prop as keyof Config];
+  },
+});
 
 export default config;
 

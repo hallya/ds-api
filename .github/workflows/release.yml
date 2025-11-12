@@ -6,6 +6,7 @@ on:
 concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: false
+
 permissions:
   id-token: write
   contents: write
@@ -15,16 +16,30 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment:
+      name: TEST
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Create .env.test file
+      - name: Prepare env
+        env:
+          LOG_LEVEL: ${{ vars.LOG_LEVEL || 'ERROR' }}
+          NAS_URL: ${{ vars.NAS_URL || 'https://example.com' }}
+          SYNOLOGY_PASSWORD: ${{ vars.SYNOLOGY_PASSWORD || 'test' }}
         run: |
-          echo "SYNOLOGY_PASSWORD=${SYNOLOGY_PASSWORD:-test}" > .env.test
-          echo "LOG_LEVEL=${LOG_LEVEL:-ERROR}" >> .env.test
-          echo "NAS_URL=${NAS_URL:-https://example.com}" >> .env.test
+          set -eu
+          # Fichier .env.test (utile si ton code charge un .env.*)
+          {
+            echo "LOG_LEVEL=${LOG_LEVEL}"
+            echo "NAS_URL=${NAS_URL}"
+            echo "SYNOLOGY_PASSWORD=${SYNOLOGY_PASSWORD}"
+          } > .env.test
+          # Exporter pour les commandes de la suite (deno, pnpm)
+          echo "LOG_LEVEL=${LOG_LEVEL}" >> $GITHUB_ENV
+          echo "NAS_URL=${NAS_URL}" >> $GITHUB_ENV
+          echo "SYNOLOGY_PASSWORD=${SYNOLOGY_PASSWORD}" >> $GITHUB_ENV
 
       - uses: pnpm/action-setup@v4
         with:
@@ -53,9 +68,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
       - name: Release
         env:
           GITHUB_TOKEN: ${{ github.token }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: "true"
+          SKIP_PREPUBLISH: "1"
         run: pnpm dlx semantic-release
