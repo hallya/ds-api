@@ -15,6 +15,7 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment: TEST
     steps:
       - uses: actions/checkout@v4
         with:
@@ -41,7 +42,6 @@ jobs:
         run: deno check --all
 
       - name: Run tests
-        environment: TEST
         run: |
           echo "SYNOLOGY_PASSWORD=${SYNOLOGY_PASSWORD}" > .env.test
           echo "LOG_LEVEL=${LOG_LEVEL}" >> .env.test
