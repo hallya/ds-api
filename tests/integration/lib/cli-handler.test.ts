@@ -6,7 +6,7 @@
  */
 import "@test-setup";
 
-import { assertEquals } from "https://deno.land/std@0.224.0/assert/mod.ts";
+import { assertEquals } from "std/assert";
 import { mockFetch } from "@test-setup";
 import { CLIHandler } from "../../../lib/cli-handler.ts";
 import {

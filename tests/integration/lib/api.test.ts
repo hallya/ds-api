@@ -8,7 +8,7 @@
  */
 import "@test-setup";
 
-import { assertEquals, assertRejects } from "https://deno.land/std@0.224.0/assert/mod.ts";
+import { assertEquals, assertRejects } from "std/assert";
 
 Deno.test("api", async (t) => {
 	await t.step("successful request returns status and data", async () => {

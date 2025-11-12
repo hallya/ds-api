@@ -10,7 +10,7 @@ import "@test-setup";
 import {
 	assertEquals,
 	assertRejects,
-} from "https://deno.land/std@0.224.0/assert/mod.ts";
+} from "std/assert";
 import { mockFetch } from "@test-setup";
 import { SynologyDS } from "../../../lib/synology-ds.ts";
 import {
