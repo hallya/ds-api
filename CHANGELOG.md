@@ -1,3 +1,18 @@
+## [1.3.1](https://github.com/hallya/ds-api/compare/v1.3.0...v1.3.1) (2025-11-12)
+
+### Refactoring
+
+* **tests:** simplify assert imports using import map ([0a0fb6e](https://github.com/hallya/ds-api/commit/0a0fb6e939be97c1ba5dbb1ad11edf5c78b8650a))
+* **tests:** update all test files to use std/assert import map ([4ebb48b](https://github.com/hallya/ds-api/commit/4ebb48b2f10a26b92bc1b2bb110ff4dbcf6ceaa3))
+
+### CI
+
+* **workflow:** install Deno in release workflow ([b63d4f8](https://github.com/hallya/ds-api/commit/b63d4f82b158e467e8fc8b51695deb2e4637e413))
+
+### Tests
+
+* **integration:** add file operations tests for deleteFromSystem ([c1ffa9a](https://github.com/hallya/ds-api/commit/c1ffa9aa15824d1b92661d7e3f5b221de5f5e12c))
+
 ## [1.3.0](https://github.com/hallya/ds-api/compare/v1.2.1...v1.3.0) (2025-11-11)
 
 ### Features
