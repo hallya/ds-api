@@ -37,19 +37,19 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Create .env.test file
-        run: |
-          cat > .env.test << EOF
-          SYNOLOGY_PASSWORD=test
-          LOG_LEVEL=ERROR
-          NAS_URL=https://example.com
-          EOF
-
       - name: Check types
         run: deno check --all
 
       - name: Run tests
-        run: deno task test
+        env:
+          SYNOLOGY_PASSWORD: test
+          LOG_LEVEL: ERROR
+          NAS_URL: https://example.com
+        run: |
+          echo "SYNOLOGY_PASSWORD=${SYNOLOGY_PASSWORD}" > .env.test
+          echo "LOG_LEVEL=${LOG_LEVEL}" >> .env.test
+          echo "NAS_URL=${NAS_URL}" >> .env.test
+          deno task test
 
       - name: Configure git identity
         run: |
