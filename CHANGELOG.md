@@ -1,3 +1,17 @@
+## [1.3.2](https://github.com/hallya/ds-api/compare/v1.3.1...v1.3.2) (2025-11-12)
+
+### Refactoring
+
+* **bin:** simplify dotenv import ([1f24839](https://github.com/hallya/ds-api/commit/1f248397ee04e249cb81722d0aad3d6305c646bf))
+
+### CI
+
+* **workflow:** add type check and tests before release ([70432df](https://github.com/hallya/ds-api/commit/70432df779cb13ab3728a90d11716242b1a45371))
+* **workflow:** create .env.test file for tests in CI ([fe8548f](https://github.com/hallya/ds-api/commit/fe8548fec1f1fd2fac0c224fb2ee882f639c639e))
+* **workflow:** update Deno to v2.x and fix type check command ([ec7c22c](https://github.com/hallya/ds-api/commit/ec7c22cb62ba40ce4e8cfc65dc573dd61da2b538))
+* **workflow:** use env vars to create .env.test file ([e1c433c](https://github.com/hallya/ds-api/commit/e1c433c4ded2e3feb3485c9dcd120080b0bd9b85))
+* **workflow:** use GitHub variables with defaults for test env ([8bcbb92](https://github.com/hallya/ds-api/commit/8bcbb92a7da7251216c0cfd11ce64404a8b4a3a3))
+
 ## [1.3.1](https://github.com/hallya/ds-api/compare/v1.3.0...v1.3.1) (2025-11-12)
 
 ### Refactoring
