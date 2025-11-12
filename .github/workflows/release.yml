@@ -42,9 +42,9 @@ jobs:
 
       - name: Run tests
         env:
-          SYNOLOGY_PASSWORD: test
-          LOG_LEVEL: ERROR
-          NAS_URL: https://example.com
+          SYNOLOGY_PASSWORD: ${{ vars.SYNOLOGY_PASSWORD || 'test' }}
+          LOG_LEVEL: ${{ vars.LOG_LEVEL || 'ERROR' }}
+          NAS_URL: ${{ vars.NAS_URL || 'https://example.com' }}
         run: |
           echo "SYNOLOGY_PASSWORD=${SYNOLOGY_PASSWORD}" > .env.test
           echo "LOG_LEVEL=${LOG_LEVEL}" >> .env.test
