@@ -1,3 +1,11 @@
+## [1.3.3](https://github.com/hallya/ds-api/compare/v1.3.2...v1.3.3) (2025-11-12)
+
+### CI
+
+* **workflow:** create .env.test early with fallback values ([9c67751](https://github.com/hallya/ds-api/commit/9c67751f5d6cf3bbdfb196c99420823ce407f9c0))
+* **workflow:** fix environment placement at job level ([2f56eb6](https://github.com/hallya/ds-api/commit/2f56eb603ceb31e2d44cebcea3ff44680eb5102b))
+* **workflow:** use TEST environment for test variables ([ed400ca](https://github.com/hallya/ds-api/commit/ed400cadb3936f5ec27a9aa7d2d9dd7cee478dcc))
+
 ## [1.3.2](https://github.com/hallya/ds-api/compare/v1.3.1...v1.3.2) (2025-11-12)
 
 ### Refactoring
