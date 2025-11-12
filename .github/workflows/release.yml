@@ -37,6 +37,14 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: Create .env.test file
+        run: |
+          cat > .env.test << EOF
+          SYNOLOGY_PASSWORD=test
+          LOG_LEVEL=ERROR
+          NAS_URL=https://example.com
+          EOF
+
       - name: Check types
         run: deno check --all
 
