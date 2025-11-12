@@ -1,48 +1,45 @@
 {
-  "compilerOptions": {
-    "allowJs": true,
-    "lib": ["deno.window"],
-    "strict": true
-  },
-  "nodeModulesDir": "auto",
-  "imports": {
-    "zod": "https://deno.land/x/zod@v3.23.8/mod.ts",
-    "std/assert": "https://deno.land/std@0.224.0/assert/mod.ts",
-    "std/dotenv": "https://deno.land/std@0.224.0/dotenv/mod.ts",
-    "std/log": "https://deno.land/std@0.224.0/log/mod.ts",
-    "std/path": "https://deno.land/std@0.224.0/path/mod.ts",
-    "std/fs": "https://deno.land/std@0.224.0/fs/mod.ts",
-    "@faker-js/faker": "https://esm.sh/@faker-js/faker@9.3.0?target=deno",
-    "@test-setup": "./tests/setup.ts",
-    "@mock-fetch": "jsr:@c4spar/mock-fetch@1.0.0"
-  },
-  "tasks": {
-    "test": "deno test --allow-all --env-file=.env.test",
-    "test:unit": "deno task test tests/unit",
-    "test:integration": "deno task test tests/integration",
-    "test:coverage": "deno task test --coverage=coverage",
-    "test:watch": "deno task test --watch",
-    "fmt": "deno fmt",
-    "lint": "deno lint"
-  },
-  "fmt": {
-    "files": {
-      "include": ["lib/", "bin/", "tests/", "*.ts", "*.js"],
-      "exclude": ["node_modules/", "coverage/"]
-    }
-  },
-  "lint": {
-    "files": {
-      "include": ["lib/", "bin/", "tests/", "*.ts", "*.js"],
-      "exclude": ["node_modules/", "coverage/"]
-    },
-    "rules": {
-      "tags": ["recommended"]
-    }
-  },
-  "test": {
-    "include": ["tests/**/*.test.ts"],
-    "exclude": ["node_modules/", "coverage/"]
-  }
+	"compilerOptions": {
+		"allowJs": true,
+		"lib": ["deno.window"],
+		"strict": true
+	},
+	"nodeModulesDir": "auto",
+	"imports": {
+		"zod": "https://deno.land/x/zod@v3.23.8/mod.ts",
+		"std/assert": "https://deno.land/std@0.224.0/assert/mod.ts",
+		"std/dotenv": "https://deno.land/std@0.224.0/dotenv/mod.ts",
+		"std/log": "https://deno.land/std@0.224.0/log/mod.ts",
+		"std/path": "https://deno.land/std@0.224.0/path/mod.ts",
+		"std/fs": "https://deno.land/std@0.224.0/fs/mod.ts",
+		"@faker-js/faker": "https://esm.sh/@faker-js/faker@9.3.0?target=deno",
+		"@test-setup": "./tests/setup.ts",
+		"@mock-fetch": "jsr:@c4spar/mock-fetch@1.0.0"
+	},
+	"tasks": {
+		"test": "deno test --allow-all --env-file=.env.test",
+		"test:unit": "deno task test tests/unit",
+		"test:integration": "deno task test tests/integration",
+		"test:coverage": "deno task test --coverage=coverage",
+		"test:watch": "deno task test --watch",
+		"fmt": "deno fmt",
+		"lint": "deno lint"
+	},
+	"fmt": {
+		"files": {
+			"include": ["lib/", "bin/", "tests/", "*.ts", "*.js"],
+			"exclude": ["node_modules/", "coverage/"]
+		}
+	},
+	"lint": {
+		"include": ["lib/", "bin/", "tests/", "*.ts", "*.js"],
+		"exclude": ["node_modules/", "coverage/"],
+		"rules": {
+			"tags": ["recommended"]
+		}
+	},
+	"test": {
+		"include": ["tests/**/*.test.ts"],
+		"exclude": ["node_modules/", "coverage/"]
+	}
 }
-
