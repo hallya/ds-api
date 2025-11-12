@@ -20,7 +20,8 @@
     "info": "deno run --allow-all bin/cli.ts info",
     "commit": "cz",
     "prepublishOnly": "deno test --allow-all",
-    "test": "deno test --allow-all"
+    "test": "deno test --allow-all",
+    "prepare": "husky"
   },
   "keywords": [
     "synology",
@@ -50,7 +51,6 @@
     "url": "https://github.com/hallya/ds-api/issues"
   },
   "homepage": "https://github.com/hallya/ds-api#readme",
-  "dependencies": {},
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
@@ -60,6 +60,7 @@
     "@semantic-release/release-notes-generator": "^14.1.0",
     "commitizen": "^4.3.1",
     "conventional-changelog-conventionalcommits": "^9.1.0",
+    "husky": "^9.1.7",
     "semantic-release": "^25.0.2"
   },
   "config": {

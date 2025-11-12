@@ -1,0 +1,10 @@
+echo "Running type check before push..."
+deno check --all
+
+if [ $? -ne 0 ]; then
+  echo "❌ Type check failed. Please fix errors before pushing."
+  exit 1
+fi
+
+echo "✅ Type check passed."
+
