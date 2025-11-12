@@ -15,11 +15,16 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
-    environment: TEST
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Create .env.test file
+        run: |
+          echo "SYNOLOGY_PASSWORD=${SYNOLOGY_PASSWORD:-test}" > .env.test
+          echo "LOG_LEVEL=${LOG_LEVEL:-ERROR}" >> .env.test
+          echo "NAS_URL=${NAS_URL:-https://example.com}" >> .env.test
 
       - uses: pnpm/action-setup@v4
         with:
@@ -42,11 +47,7 @@ jobs:
         run: deno check --all
 
       - name: Run tests
-        run: |
-          echo "SYNOLOGY_PASSWORD=${SYNOLOGY_PASSWORD}" > .env.test
-          echo "LOG_LEVEL=${LOG_LEVEL}" >> .env.test
-          echo "NAS_URL=${NAS_URL}" >> .env.test
-          deno task test
+        run: deno task test
 
       - name: Configure git identity
         run: |
