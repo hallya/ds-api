@@ -1,3 +1,19 @@
+## [1.4.0](https://github.com/hallya/ds-api/compare/v1.3.4...v1.4.0) (2025-11-15)
+
+### Features
+
+* **cli-handler:** add return types to handler methods ([e1aa92e](https://github.com/hallya/ds-api/commit/e1aa92e3fc46a94668bdf28c5d02d3541ab71516))
+
+### Tests
+
+* **helpers:** add CLIHandler test setup helpers ([72b9e52](https://github.com/hallya/ds-api/commit/72b9e5221ad4f07683253effe52b94008317d605))
+* **integration:** refactor cli-handler tests to use helper functions ([9e9b4a8](https://github.com/hallya/ds-api/commit/9e9b4a86c2bb0be3336d3fd0233f5b70f96a6af6))
+* **integration:** verify handleInfo return value ([b954082](https://github.com/hallya/ds-api/commit/b9540824e5257351e75769a1f5f87153fd4bae40))
+* **integration:** verify handleList JSON output return value ([bbd7883](https://github.com/hallya/ds-api/commit/bbd788321f06edc82069e1d1ba7d75fe733143f1))
+* **integration:** verify handleList return value ([314c12c](https://github.com/hallya/ds-api/commit/314c12c98b2453bed2056e7c551072bdeb3020ed))
+* **integration:** verify handlePurge return value ([efcb3ba](https://github.com/hallya/ds-api/commit/efcb3ba97878fa3a67f282c2e29abdf21b76695a))
+* **integration:** verify handleRemove return value ([3588b9a](https://github.com/hallya/ds-api/commit/3588b9af9c64f71050f502fedb6ab4dc62ae810b))
+
 ## [1.3.4](https://github.com/hallya/ds-api/compare/v1.3.3...v1.3.4) (2025-11-15)
 
 ### Bug Fixes
