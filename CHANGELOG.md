@@ -1,3 +1,9 @@
+## [1.3.4](https://github.com/hallya/ds-api/compare/v1.3.3...v1.3.4) (2025-11-15)
+
+### Bug Fixes
+
+* **config:** make validation lazy to allow async test setup ([1a8e077](https://github.com/hallya/ds-api/commit/1a8e077baf61eb7020ff7545fbd271feba73b736))
+
 ## [1.3.3](https://github.com/hallya/ds-api/compare/v1.3.2...v1.3.3) (2025-11-12)
 
 ### CI
