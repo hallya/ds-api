@@ -13,6 +13,7 @@ import {
   createApiInfoResponse,
   createLoginResponse,
   createTasksListResponse,
+  createDeleteResponse,
 } from "./api-response-factory.ts";
 import type { ApiInfo, LoginResponse, Task } from "../../lib/types/index.ts";
 
@@ -71,5 +72,17 @@ export function mockTaskListResponse(tasks: Task[]): void {
   const tasksResponse = createTasksListResponse(tasks);
   mockFetch("https://example.com/webapi/DownloadStation/task.cgi*", {
     body: JSON.stringify(tasksResponse),
+  });
+}
+
+/**
+ * Mocks the delete task API endpoint response.
+ *
+ * @param taskIds - Array of task IDs that were deleted.
+ */
+export function mockDeleteResponse(taskIds: string[]): void {
+  const deleteResp = createDeleteResponse(taskIds);
+  mockFetch("https://example.com/webapi/DownloadStation/task.cgi*", {
+    body: JSON.stringify(deleteResp),
   });
 }
