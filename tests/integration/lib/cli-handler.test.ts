@@ -91,11 +91,19 @@ Deno.test("cli-handler", async (t) => {
 		handler.setJson(true);
 		// @ts-expect-error - accessing private property for testing
 		await handler.ds.authenticate();
-		await handler.handleList();
+		
+		const result = await handler.handleList();
 
+		// Verify that handleList returns the tasks
+		assertEquals(result.length, 2, "Should return 2 tasks");
+		assertEquals(Array.isArray(result), true, "Should return an array");
+
+		// Verify that JSON file was created
 		const jsonContent = await Deno.readTextFile("torrents.json");
 		const parsed = JSON.parse(jsonContent);
-		assertEquals(Array.isArray(parsed), true);
+		assertEquals(Array.isArray(parsed), true, "JSON file should contain an array");
+		assertEquals(parsed.length, 2, "JSON file should contain 2 tasks");
+		assertEquals(parsed.length, result.length, "JSON file should have same number of tasks as return value");
 
 		await Deno.remove("torrents.json");
 	});
