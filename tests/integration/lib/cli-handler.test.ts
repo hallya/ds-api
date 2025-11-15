@@ -229,8 +229,13 @@ Deno.test("cli-handler", async (t) => {
 
 		// @ts-expect-error - accessing private property for testing
 		await handler.ds.authenticate();
-		await handler.handleInfo("Torrent 1");
+		
+		const result = await handler.handleInfo("Torrent 1");
 
-		assertEquals(true, true);
+		assertEquals(result.id, "task1", "Should return task1");
+		assertEquals(result.title, "Torrent 1", "Should return task with title 'Torrent 1'");
+		assertEquals(typeof result.size, "number", "size should be a number");
+		assertEquals(typeof result.status, "string", "status should be a string");
+		assertEquals(typeof result.type, "string", "type should be a string");
 	});
 });
