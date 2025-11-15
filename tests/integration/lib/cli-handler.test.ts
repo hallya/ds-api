@@ -50,9 +50,16 @@ Deno.test("cli-handler", async (t) => {
 
 		// @ts-expect-error - accessing private property for testing
 		await handler.ds.authenticate();
-		await handler.handleList();
+		
+		const result = await handler.handleList();
 
-		assertEquals(true, true);
+		assertEquals(result.length, 2, "Should return 2 tasks");
+		assertEquals(Array.isArray(result), true, "Should return an array");
+		result.forEach((task, index) => {
+			assertEquals(typeof task.id, "string", `Task ${index} should have an id`);
+			assertEquals(typeof task.title, "string", `Task ${index} should have a title`);
+			assertEquals(typeof task.size, "number", `Task ${index} should have a size`);
+		});
 	});
 
 	await t.step("handleList with JSON output", async () => {
