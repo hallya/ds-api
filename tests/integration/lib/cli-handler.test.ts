@@ -191,9 +191,14 @@ Deno.test("cli-handler", async (t) => {
 		handler.setDryRun(false);
 		// @ts-expect-error - accessing private property for testing
 		await handler.ds.authenticate();
-		await handler.handlePurge("1.5");
+		
+		const result = await handler.handlePurge("1.5");
 
-		assertEquals(true, true);
+		assertEquals(result.tasksToPurge.length, 2, "Should purge 2 tasks");
+		assertEquals(result.tasksToPurge[0].id, "task1", "First task should be task1");
+		assertEquals(result.tasksToPurge[1].id, "task2", "Second task should be task2");
+		assertEquals(typeof result.totalSize, "number", "totalSize should be a number");
+		assertEquals(result.totalSize > 0, true, "totalSize should be greater than 0");
 	});
 
 	await t.step("handleInfo", async () => {
