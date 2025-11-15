@@ -7,8 +7,9 @@ import {
   displayTaskInfo,
 } from "./cli.ts";
 import logger from "./logger.ts";
-import type { Task } from "./tasks.ts";
-import type { Config } from "./config.ts";
+import type { ApiTask } from "./types/api.ts";
+import { ApiDeleteTaskResult } from "./types/api.ts";
+import type { PurgeResult } from "./types/index.ts";
 
 /**
  * Options for CLIHandler constructor.
@@ -35,7 +36,7 @@ export class CLIHandler {
    * @param options.path - The base path for file operations.
    */
   constructor(options: CLIHandlerOptions = {}) {
-    this.ds = new SynologyDS(options);
+    this.ds = new SynologyDS({ ...options, basePath: options.path });
     this.isDryRun = true;
     this.isJson = false;
   }
@@ -118,7 +119,7 @@ export class CLIHandler {
    * Handles the 'list' command to display all download tasks.
    * @returns A promise that resolves when the tasks are displayed.
    */
-  async handleList(): Promise<void> {
+  async handleList(): Promise<ApiTask[]> {
     const tasks = await this.ds.getTasksByUploadAndTime();
 
     if (tasks.length === 0) {
@@ -128,7 +129,7 @@ export class CLIHandler {
       } else {
         logger.info("No torrents found.");
       }
-      return;
+      return tasks;
     }
 
     if (this.isJson) {
@@ -137,6 +138,8 @@ export class CLIHandler {
     } else {
       displayTasks(tasks);
     }
+
+    return tasks;
   }
 
   /**
@@ -144,7 +147,7 @@ export class CLIHandler {
    * @param titlesArg - Comma-separated list of task titles to remove.
    * @returns A promise that resolves when the removal is requested.
    */
-  async handleRemove(titlesArg: string): Promise<void> {
+  async handleRemove(titlesArg: string): Promise<ApiDeleteTaskResult[]> {
     validateRemoveArgs(titlesArg);
     const result = await this.ds.removeTasksByTitles(titlesArg);
 
@@ -157,6 +160,8 @@ export class CLIHandler {
     if (failedDeletes.length > 0) {
       logger.warn(`⚠ 'remove' command completed with ${failedDeletes.length} failure(s)`);
     }
+
+    return result;
   }
 
   /**
@@ -164,7 +169,7 @@ export class CLIHandler {
    * @param sizeArg - The maximum size in GB for tasks to keep.
    * @returns A promise that resolves when the purge operation is complete.
    */
-  async handlePurge(sizeArg: string): Promise<void> {
+  async handlePurge(sizeArg: string): Promise<PurgeResult> {
     const maxSizeGB = validatePurgeArgs(sizeArg);
 
     if (this.isDryRun) {
@@ -179,6 +184,7 @@ export class CLIHandler {
     if (!this.isDryRun) {
       logger.info(`✓ 'purge' command completed`);
     }
+    return result;
   }
 
   /**
@@ -186,11 +192,12 @@ export class CLIHandler {
    * @param titleArg - The title of the task to get information about.
    * @returns A promise that resolves when the task information is displayed.
    */
-  async handleInfo(titleArg: string): Promise<void> {
+  async handleInfo(titleArg: string): Promise<ApiTask> {
     const title = validateInfoArgs(titleArg);
     const task = await this.ds.getTaskInfo(title);
     displayTaskInfo(task);
     logger.info(`\nTask information displayed for: "${title}"`);
+    return task;
   }
 }
 
