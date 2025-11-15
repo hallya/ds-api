@@ -145,9 +145,12 @@ Deno.test("cli-handler", async (t) => {
 		handler.setDryRun(false);
 		// @ts-expect-error - accessing private property for testing
 		await handler.ds.authenticate();
-		await handler.handleRemove("Torrent 1");
+		
+		const result = await handler.handleRemove("Torrent 1");
 
-		assertEquals(true, true);
+		assertEquals(result.length, 1, "Should return one deletion result");
+		assertEquals(result[0].id, "task1", "Should return result for task1");
+		assertEquals(result[0].error, 0, "Should indicate successful deletion (error code 0)");
 	});
 
 	await t.step("handlePurge", async () => {
