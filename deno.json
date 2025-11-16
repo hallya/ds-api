@@ -1,4 +1,8 @@
 {
+	"name": "@hallya/ds-api",
+	"version": "1.4.0",
+	"license": "MIT",
+	"exports": "./index.ts",
 	"compilerOptions": {
 		"allowJs": true,
 		"lib": ["deno.window"],
@@ -6,13 +10,13 @@
 	},
 	"nodeModulesDir": "auto",
 	"imports": {
-		"zod": "https://deno.land/x/zod@v3.23.8/mod.ts",
-		"std/assert": "https://deno.land/std@0.224.0/assert/mod.ts",
-		"std/dotenv": "https://deno.land/std@0.224.0/dotenv/mod.ts",
-		"std/log": "https://deno.land/std@0.224.0/log/mod.ts",
-		"std/path": "https://deno.land/std@0.224.0/path/mod.ts",
-		"std/fs": "https://deno.land/std@0.224.0/fs/mod.ts",
-		"@faker-js/faker": "https://esm.sh/@faker-js/faker@9.3.0?target=deno",
+		"std/assert": "jsr:@std/assert@^1.0.15",
+		"zod": "npm:zod@^3.23.8",
+		"std/dotenv": "jsr:@std/dotenv@0.224.0",
+		"std/log": "jsr:@std/log@0.224.0",
+		"std/path": "jsr:@std/path@0.224.0",
+		"std/fs": "jsr:@std/fs@0.224.0",
+		"@faker-js/faker": "npm:@faker-js/faker@9.3.0",
 		"@test-setup": "./tests/setup.ts",
 		"@mock-fetch": "jsr:@c4spar/mock-fetch@1.0.0"
 	},

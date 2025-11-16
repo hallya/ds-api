@@ -1,4 +1,4 @@
-import * as log from "std/log";
+import * as log from "jsr:@std/log@0.224.0";
 import config from "./config.ts";
 
 /**

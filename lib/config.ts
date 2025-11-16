@@ -1,5 +1,5 @@
-import type { LevelName } from "std/log";
-import { z } from "zod";
+import type { LevelName } from "jsr:@std/log@0.224.0";
+import { z } from "npm:zod@^3.23.8";
 
 /**
  * Configuration schema for environment variables validation.
@@ -22,9 +22,7 @@ function getConfig(): Config {
     return validatedConfig;
   }
 
-  const env = Object.fromEntries(
-    Object.entries(Deno.env.toObject()).map(([key, value]) => [key, value])
-  );
+  const env = Deno.env.toObject();
 
   const result = configSchema.safeParse(env);
 

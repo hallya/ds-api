@@ -1,0 +1,32 @@
+{
+  "name": "@hallya/ds-api",
+  "version": "1.3.4",
+  "exports": "./index.ts",
+  "dependencies": {
+    "npm:zod": "^3.23.8",
+    "npm:pino": "^9.5.0",
+    "jsr:@std/path@0.224.0": "^0.224.0",
+    "jsr:@std/log@0.224.0": "^0.224.0"
+  },
+  "publish": {
+    "include": [
+      "index.ts",
+      "lib/**/*.ts",
+      "bin/**/*.ts",
+      "README.md",
+      "LICENSE",
+      "deno.json"
+    ],
+    "exclude": [
+      "tests/**",
+      "scripts/**",
+      "dist/**",
+      "node_modules/**",
+      "coverage/**",
+      ".github/**",
+      ".polyfills/**",
+      "*.test.ts",
+      "*.test.js"
+    ]
+  }
+}

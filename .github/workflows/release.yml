@@ -8,10 +8,8 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
+  contents: read
   id-token: write
-  contents: write
-  issues: write
-  pull-requests: write
 
 jobs:
   release:
@@ -72,7 +70,8 @@ jobs:
       - name: Release
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: "true"
           SKIP_PREPUBLISH: "1"
         run: pnpm dlx semantic-release
+
+      - name: Publish to JSR
+        run: deno publish
