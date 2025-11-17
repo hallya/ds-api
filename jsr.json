@@ -1,6 +1,6 @@
 {
   "name": "@hallya/ds-api",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "A Deno library for interacting with Synology Download Station API",
   "exports": "./index.ts",
   "dependencies": {

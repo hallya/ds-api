@@ -1,3 +1,14 @@
+## [1.5.1](https://github.com/hallya/ds-api/compare/v1.5.0...v1.5.1) (2025-11-17)
+
+### Documentation
+
+* **args:** add JSDoc for CLI parsing interfaces ([5a5854c](https://github.com/hallya/ds-api/commit/5a5854ce987acab94b629a5a4a848a6e6358e580))
+* **cli-handler:** add JSDoc for CLIHandlerOptions ([fc3f72e](https://github.com/hallya/ds-api/commit/fc3f72e34a4bf998255698d99c9fb477fdb36d5f))
+* **config:** improve LogLevel type documentation ([7e6dbb4](https://github.com/hallya/ds-api/commit/7e6dbb46a104a66e55fc1286997f24f609b591a7))
+* **jsr:** add package description ([ef0c70c](https://github.com/hallya/ds-api/commit/ef0c70c4ec1104b567f51434e4550a964e68edf3))
+* **synology-ds:** add JSDoc for options and authenticate ([8b13df5](https://github.com/hallya/ds-api/commit/8b13df594094baf2056fa6404a4fa5645ffad772))
+* **types:** add JSDoc for type definitions ([2538b77](https://github.com/hallya/ds-api/commit/2538b77bd3a7e0c93c717e6be95a96787e948340))
+
 ## [1.5.0](https://github.com/hallya/ds-api/compare/v1.4.3...v1.5.0) (2025-11-17)
 
 ### Features
