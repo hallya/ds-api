@@ -185,7 +185,7 @@ Deno.test("file-operations", async (t) => {
           const error = results[0].reason as Error;
           assert(
             error.message.includes(
-              "path does not start with expected base directory"
+              "path does not start with expected root directory"
             )
           );
         } finally {

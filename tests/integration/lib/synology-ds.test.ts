@@ -204,7 +204,7 @@ Deno.test("synology-ds", async (t) => {
         ds.validatePath("/other/torrent1");
       },
       Error,
-      "path does not start with expected base directory"
+      "path does not start with expected root directory"
     );
   });
 });
