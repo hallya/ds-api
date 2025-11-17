@@ -5,12 +5,12 @@ import { z } from "npm:zod@^3.23.8";
  * Configuration schema for environment variables validation.
  */
 const configSchema = z.object({
-  SYNOLOGY_USERNAME: z.string().optional(),
+  SYNOLOGY_USERNAME: z.string().min(1, "SYNOLOGY_USERNAME is required"),
   SYNOLOGY_PASSWORD: z.string().min(1, "SYNOLOGY_PASSWORD is required"),
-  SYNOLOGY_BASE_PATH: z.string().optional(),
+  SYNOLOGY_BASE_PATH: z.string().min(1, "SYNOLOGY_BASE_PATH is required"),
   SYNOLOGY_DISABLE_SSL_VERIFICATION: z.enum(["true", "false"]).optional(),
   LOG_LEVEL: z.enum(["ERROR", "WARN", "INFO", "DEBUG"]).optional(),
-  NAS_URL: z.string().url().optional(),
+  NAS_URL: z.string().url().min(1, "NAS_URL is required"),
   RETRY_ATTEMPTS: z.coerce.number().int().min(0).optional(),
   RETRY_DELAY: z.coerce.number().int().min(0).optional(),
 }).passthrough();
@@ -52,17 +52,17 @@ function getConfig(): Config {
  */
 export interface Config {
   /** The username for Synology authentication. */
-  synologyUsername?: string;
+  synologyUsername: string;
   /** The password for Synology authentication. */
   synologyPassword: string;
   /** The base path for Synology operations. */
-  synologyBasePath?: string;
+  synologyBasePath: string;
   /** Whether to disable SSL verification. */
   synologyDisableSslVerification: boolean;
   /** The logging level (error, warn, info, debug). */
   logLevel: LevelName;
   /** The NAS URL for API calls. */
-  nasUrl?: string;
+  nasUrl: string;
   /** Number of retry attempts for API calls. */
   retryAttempts: number;
   /** Delay between retry attempts in milliseconds. */
