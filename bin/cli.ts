@@ -1,10 +1,8 @@
 #!/usr/bin/env -S deno run --allow-env --allow-read --allow-write --allow-net
+import "../lib/env.ts";
 
-import { load } from "std/dotenv";
 import { CLIHandler } from "../lib/cli-handler.ts";
 import logger from "../lib/logger.ts";
-
-await load({ export: true });
 
 async function main() {
   const args = Deno.args;
