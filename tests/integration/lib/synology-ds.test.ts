@@ -196,7 +196,7 @@ Deno.test("synology-ds", async (t) => {
           baseUrl: config.nasUrl,
           username: "test",
           password: "test",
-          basePath: "/downloads",
+          downloadRootPath: "/downloads",
         });
 
         ds.validatePath("/downloads/torrent1");

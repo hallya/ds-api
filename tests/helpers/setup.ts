@@ -14,7 +14,7 @@ export function createMockConfig(overrides: {
   nasUrl?: string;
   synologyUsername?: string;
   synologyPassword?: string;
-  synologyBasePath?: string;
+  downloadRootPath?: string;
   synologyDisableSslVerification?: boolean;
   logLevel?: string;
   retryAttempts?: number;
@@ -24,7 +24,7 @@ export function createMockConfig(overrides: {
     nasUrl: overrides.nasUrl ?? "https://test-nas.example.com",
     synologyUsername: overrides.synologyUsername ?? "testuser",
     synologyPassword: overrides.synologyPassword ?? "testpass",
-    synologyBasePath: overrides.synologyBasePath ?? "/volume1",
+    downloadRootPath: overrides.downloadRootPath ?? "/volume1",
     synologyDisableSslVerification: overrides.synologyDisableSslVerification ?? false,
     logLevel: overrides.logLevel ?? "error",
     retryAttempts: overrides.retryAttempts ?? 1,
