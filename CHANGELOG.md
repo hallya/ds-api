@@ -1,3 +1,22 @@
+## [1.4.1](https://github.com/hallya/ds-api/compare/v1.4.0...v1.4.1) (2025-11-17)
+
+### Bug Fixes
+
+* **config:** improve validation error message readability ([e40a76e](https://github.com/hallya/ds-api/commit/e40a76e9a1e387256108061c06a92f0c834b2474))
+* **jsr:** migrate imports to JSR-compatible specifiers ([711a483](https://github.com/hallya/ds-api/commit/711a483c8e8673d35e3bdb8dac19f3f024c58c45))
+
+### Refactoring
+
+* **env:** extract env loading to dedicated module ([d6b1f5e](https://github.com/hallya/ds-api/commit/d6b1f5e491eb42f861145f20e0e956c272715b76))
+
+### CI
+
+* **release:** publish to JSR only when new version released ([88d78c4](https://github.com/hallya/ds-api/commit/88d78c4e13fe2c7c55dbf5a73186ce2fff82d939))
+
+### Tests
+
+* **config:** use config.nasUrl instead of hardcoded URLs ([5a1a820](https://github.com/hallya/ds-api/commit/5a1a8204c173967f4e6d5f572197a014a40019e4))
+
 ## [1.4.0](https://github.com/hallya/ds-api/compare/v1.3.4...v1.4.0) (2025-11-15)
 
 ### Features
