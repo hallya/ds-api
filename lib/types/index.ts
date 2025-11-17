@@ -40,15 +40,22 @@ export type {
 
 /**
  * Purge result structure (internal).
- * Result of a purge operation.
+ * Result of a purge operation containing information about tasks selected for removal.
  */
 export interface PurgeResult {
+  /** Human-readable message describing the purge operation result. */
   message: string;
+  /** Array of tasks selected for purging. */
   tasksToPurge: ApiTask[];
+  /** Total size in bytes of tasks to be purged. */
   totalSize: number;
+  /** Whether the purge was performed in dry-run mode (no actual deletion). */
   dryRun?: boolean;
+  /** API delete operation results for each task. */
   apiDeleteResults?: ApiDeleteTaskResult[];
+  /** Number of successfully deleted tasks. */
   successfulCount?: number;
+  /** Number of failed deletions. */
   failedCount?: number;
 }
 

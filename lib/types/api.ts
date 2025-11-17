@@ -116,11 +116,13 @@ export interface ApiTaskAdditional {
 
 /**
  * Task status values from API.
+ * Represents the current state of a download task.
  */
 export type ApiTaskStatus = "waiting" | "downloading" | "paused" | "finishing" | "finished" | "hash_checking" | "seeding" | "filehosting_waiting" | "extracting" | "error";
 
 /**
  * Task type values from API.
+ * Represents the download protocol or source type for a task.
  */
 export type ApiTaskType = "bt" | "nzb" | "http" | "ftp" | "emule";
 
