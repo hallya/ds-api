@@ -14,10 +14,14 @@ import type { PurgeResult } from "./types/index.ts";
 
 /**
  * Options for CLIHandler constructor.
+ * Used to configure the underlying SynologyDS instance.
  */
 export interface CLIHandlerOptions {
+  /** The base URL for the Synology NAS (e.g., "https://nas.local:5001"). */
   baseUrl?: string;
+  /** The username for authentication. */
   username?: string;
+  /** The root path for download operations and security validation. */
   downloadRootPath?: string;
 }
 
