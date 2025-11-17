@@ -5,26 +5,36 @@
 
 /**
  * Result of parsing command line arguments.
+ * Contains flags (key-value pairs) and positional arguments.
  */
 export interface ParsedArgs {
+  /** Parsed flags as key-value pairs. Boolean flags have value `true`. */
   readonly flags: Readonly<Record<string, boolean | string | undefined>>;
+  /** Positional arguments (non-flag arguments). */
   readonly positional: readonly string[];
 }
 
 /**
  * CLI-specific options extracted from parsed arguments.
+ * Used to configure CLI behavior like dry-run mode and JSON output.
  */
 export interface CLIOptions {
+  /** Whether to enable dry-run mode (no actual operations performed). */
   readonly dryRun: boolean;
+  /** Optional path for JSON output. Empty string means output to stdout. */
   readonly jsonPath?: string;
 }
 
 /**
  * Complete parsed CLI command structure.
+ * Represents a parsed command with action, argument, and options.
  */
 export interface ParsedCLI {
+  /** The CLI action/command (e.g., "list", "remove", "purge", "info"). */
   readonly action: string;
+  /** The argument passed to the action (e.g., task title, size limit). */
   readonly arg: string;
+  /** CLI-specific options like dry-run and JSON output. */
   readonly options: CLIOptions;
 }
 
@@ -90,6 +100,18 @@ function extractCLIOptions(
 
 /**
  * Parses CLI arguments and extracts command, argument, and options.
+ * 
+ * @param args - Array of command line arguments (typically `Deno.args`).
+ * @returns A parsed CLI structure with action, argument, and options.
+ * 
+ * @example
+ * ```ts
+ * const parsed = parseCLI(["list"]);
+ * // { action: "list", arg: "", options: { dryRun: false } }
+ * 
+ * const parsed2 = parseCLI(["remove", "task-title", "--dry-run"]);
+ * // { action: "remove", arg: "task-title", options: { dryRun: true } }
+ * ```
  */
 export function parseCLI(args: readonly string[]): ParsedCLI {
   const { flags, positional } = parseArgs(args);
