@@ -1,7 +1,8 @@
 import { z } from "npm:zod@^3.23.8";
 
 /**
- * Log level type
+ * Log level type.
+ * Defines the available logging levels, ordered from most to least verbose.
  */
 export type LogLevel = "ERROR" | "WARN" | "INFO" | "DEBUG" | "SILENT";
 
