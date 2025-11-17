@@ -1,5 +1,9 @@
-import type { LevelName } from "jsr:@std/log@0.224.0";
 import { z } from "npm:zod@^3.23.8";
+
+/**
+ * Log level type
+ */
+export type LogLevel = "ERROR" | "WARN" | "INFO" | "DEBUG" | "SILENT";
 
 /**
  * Configuration schema for environment variables validation.
@@ -38,7 +42,7 @@ function getConfig(): Config {
     synologyPassword: value.SYNOLOGY_PASSWORD,
     downloadRootPath: value.SYNOLOGY_DOWNLOAD_ROOT_PATH,
     synologyDisableSslVerification: value.SYNOLOGY_DISABLE_SSL_VERIFICATION === "true",
-    logLevel: (value.LOG_LEVEL || "INFO") as LevelName,
+    logLevel: (value.LOG_LEVEL || "INFO") as LogLevel,
     nasUrl: value.NAS_URL,
     retryAttempts: value.RETRY_ATTEMPTS || 3,
     retryDelay: value.RETRY_DELAY || 1000,
@@ -59,8 +63,8 @@ export interface Config {
   downloadRootPath: string;
   /** Whether to disable SSL verification. */
   synologyDisableSslVerification: boolean;
-  /** The logging level (error, warn, info, debug). */
-  logLevel: LevelName;
+  /** The logging level (error, warn, info, debug, silent). */
+  logLevel: LogLevel;
   /** The NAS URL for API calls. */
   nasUrl: string;
   /** Number of retry attempts for API calls. */

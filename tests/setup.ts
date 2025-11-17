@@ -17,7 +17,6 @@
 
 import { mockFetch, resetFetch } from "@mock-fetch";
 import { load } from "std/dotenv";
-import * as log from "std/log";
 
 // ============================================================================
 // 1. Environment Variables Setup
@@ -29,23 +28,8 @@ try {
 	throw new Error("Failed to load .env.test file");
 }
 
-// ============================================================================
-// 2. Logger Setup
-// ============================================================================
-
-await log.setup({
-	handlers: {
-		console: new log.ConsoleHandler("ERROR", {
-			formatter: () => "", // Suppress all log output during tests
-		}),
-	},
-	loggers: {
-		default: {
-			level: "ERROR",
-			handlers: ["console"],
-		},
-	},
-});
+// Set LOG_LEVEL to SILENT for tests to suppress all log output
+Deno.env.set("LOG_LEVEL", "SILENT");
 
 // ============================================================================
 // 3. Global Fetch Mock Setup
