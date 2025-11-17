@@ -1,3 +1,4 @@
+import { dirname } from "std/path";
 import { SynologyDS } from "./synology-ds.ts";
 import {
   displayTasks,
@@ -26,7 +27,7 @@ export interface CLIHandlerOptions {
 export class CLIHandler {
   private ds: SynologyDS;
   private isDryRun: boolean;
-  private isJson: boolean;
+  private jsonPath?: string;
 
   /**
    * Creates a new CLIHandler instance.
@@ -38,7 +39,7 @@ export class CLIHandler {
   constructor(options: CLIHandlerOptions = {}) {
     this.ds = new SynologyDS({ ...options, basePath: options.path });
     this.isDryRun = true;
-    this.isJson = false;
+    this.jsonPath = undefined;
   }
 
   /**
@@ -80,11 +81,12 @@ export class CLIHandler {
 
   /**
    * Sets the JSON output mode for list command.
-   * @param json - Whether to enable JSON output mode.
+   * @param jsonPath - Optional path for the JSON file. If not provided, defaults to "torrents.json".
+   *                   If path ends with .json, uses it as-is. Otherwise, creates torrents.json in that directory.
    * @returns The CLIHandler instance for chaining.
    */
-  setJson(json: boolean): CLIHandler {
-    this.isJson = json;
+  setJson(jsonPath?: string): CLIHandler {
+    this.jsonPath = jsonPath;
     return this;
   }
 
@@ -131,19 +133,37 @@ export class CLIHandler {
   async handleList(): Promise<ApiTask[]> {
     const tasks = await this.ds.getTasksByUploadAndTime();
 
+    let outputFilePath: string | undefined = undefined;
+    if (this.jsonPath !== undefined) {
+      if (this.jsonPath === "") {
+        outputFilePath = "torrents.json";
+      } else if (this.jsonPath.endsWith(".json")) {
+        outputFilePath = this.jsonPath;
+        const parentDir = dirname(this.jsonPath);
+        if (parentDir !== ".") {
+          await Deno.mkdir(parentDir, { recursive: true });
+        }
+      } else {
+        await Deno.mkdir(this.jsonPath, { recursive: true });
+        outputFilePath = `${this.jsonPath}/torrents.json`;
+      }
+    }
+
     if (tasks.length === 0) {
-      if (this.isJson) {
-        await Deno.writeTextFile("torrents.json", JSON.stringify([], null, 2));
-        logger.info("Created torrents.json file with empty list.");
+      if (outputFilePath !== undefined) {
+        await Deno.writeTextFile(outputFilePath, JSON.stringify([], null, 2));
+        logger.info(`Created ${outputFilePath} file with empty list.`);
       } else {
         logger.info("No torrents found.");
       }
       return tasks;
     }
 
-    if (this.isJson) {
-      await Deno.writeTextFile("torrents.json", JSON.stringify(tasks, null, 2));
-      logger.info(`Created torrents.json file with ${tasks.length} task(s).`);
+    if (outputFilePath !== undefined) {
+      await Deno.writeTextFile(outputFilePath, JSON.stringify(tasks, null, 2));
+      logger.info(
+        `Created ${outputFilePath} file with ${tasks.length} task(s).`
+      );
     } else {
       displayTasks(tasks);
     }
