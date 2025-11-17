@@ -68,34 +68,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Release
-        id: release
         env:
           GITHUB_TOKEN: ${{ github.token }}
           SKIP_PREPUBLISH: "1"
-        run: |
-          git fetch --tags --force
-          TAGS_BEFORE=$(git tag --list | sort -V | tail -1 || echo "")
-
-          pnpm dlx semantic-release || true
-
-          git fetch --tags --force
-          TAGS_AFTER=$(git tag --list | sort -V | tail -1 || echo "")
-
-          if [ "$TAGS_AFTER" != "$TAGS_BEFORE" ] && [ -n "$TAGS_AFTER" ]; then
-            echo "released=true" >> $GITHUB_OUTPUT
-            VERSION=$(echo "$TAGS_AFTER" | sed 's/^v//')
-            echo "version=$VERSION" >> $GITHUB_OUTPUT
-          else            
-            COMMIT_MSG=$(git log -1 --pretty=%B)
-            if echo "$COMMIT_MSG" | grep -q "^chore(release):"; then
-              echo "released=true" >> $GITHUB_OUTPUT
-              VERSION=$(echo "$COMMIT_MSG" | sed -n 's/^chore(release): \([0-9]\+\.[0-9]\+\.[0-9]\+\).*/\1/p')
-              echo "version=$VERSION" >> $GITHUB_OUTPUT
-            else
-              echo "released=false" >> $GITHUB_OUTPUT
-            fi
-          fi
-
-      - name: Publish to JSR
-        if: steps.release.outputs.released == 'true'
-        run: deno publish
+        run: pnpm dlx semantic-release
