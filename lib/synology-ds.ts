@@ -21,8 +21,7 @@ export interface SynologyDSOptions {
   baseUrl?: string;
   username?: string;
   password?: string;
-  path?: string;
-  basePath?: string;
+  downloadRootPath?: string;
   config?: Config;
 }
 
@@ -37,8 +36,7 @@ export class SynologyDS {
   baseUrl?: string;
   username?: string;
   password?: string;
-  path?: string;
-  basePath: string;
+  downloadRootPath: string;
   sid: string | null = null;
   apiInfo: ApiInfo | null = null;
   tasksMap: Map<string, Task> = new Map();
@@ -49,8 +47,7 @@ export class SynologyDS {
    * @param options.baseUrl - The base URL for the NAS.
    * @param options.username - The username for authentication.
    * @param options.password - The password for authentication.
-   * @param options.path - The base path for file operations.
-   * @param options.basePath - The base path for validation (defaults to path).
+   * @param options.downloadRootPath - The root path for download operations and security validation.
    * @param options.config - Configuration object to inject (for testing). If not provided, uses default config.
    */
   constructor(options: SynologyDSOptions = {}) {
@@ -60,8 +57,7 @@ export class SynologyDS {
     this.baseUrl = options.baseUrl ?? injectedConfig.nasUrl;
     this.username = options.username ?? injectedConfig.synologyUsername;
     this.password = options.password ?? injectedConfig.synologyPassword;
-    this.path = options.path ?? injectedConfig.synologyBasePath;
-    this.basePath = options.basePath ?? injectedConfig.synologyBasePath ?? (this.path || "");
+    this.downloadRootPath = options.downloadRootPath ?? injectedConfig.downloadRootPath;
   }
 
   /**
@@ -519,7 +515,7 @@ export class SynologyDS {
   async deleteFromSystem(paths: string[]): Promise<Array<PromiseSettledResult<string>>> {
     const promises = paths.map(async (pathItem): Promise<string> => {
       // Use join() to properly handle path separators
-      const fullPath = this.path ? join(this.path, pathItem) : pathItem;
+      const fullPath = this.downloadRootPath ? join(this.downloadRootPath, pathItem) : pathItem;
       this.validatePath(fullPath);
       logger.debug(`Deleting file/folder: "${fullPath}"`);
 
@@ -631,7 +627,7 @@ export class SynologyDS {
     paths.forEach((pathItem, index) => {
       const task = pathToTaskMap.get(pathItem);
       const taskTitle = task ? task.title : "Unknown";
-      const displayPath = includeFullPath && this.path ? join(this.path, pathItem) : pathItem;
+      const displayPath = includeFullPath && this.downloadRootPath ? join(this.downloadRootPath, pathItem) : pathItem;
       logger.info(`  → File ${index + 1}/${paths.length}: "${displayPath}" (Task: "${taskTitle}")`);
     });
   }
@@ -643,16 +639,16 @@ export class SynologyDS {
    * @throws If the path fails validation.
    */
   validatePath(fullPath: string): void {
-    if (!this.basePath) {
-      throw new Error("Base path is not configured");
+    if (!this.downloadRootPath) {
+      throw new Error("Download root path is not configured");
     }
 
     const normalizedPath = join(fullPath);
-    const normalizedBase = join(this.basePath);
+    const normalizedBase = join(this.downloadRootPath);
 
     if (!normalizedPath.startsWith(normalizedBase)) {
       throw new Error(
-        `Path validation failed: path does not start with expected base directory '${this.basePath}'`
+        `Path validation failed: path does not start with expected root directory '${this.downloadRootPath}'`
       );
     }
 
@@ -662,7 +658,7 @@ export class SynologyDS {
       );
     }
 
-    if (!this.basePath.startsWith("/") && !fullPath.startsWith("/")) {
+    if (!this.downloadRootPath.startsWith("/") && !fullPath.startsWith("/")) {
       throw new Error(`Path validation failed: path is not an absolute path`);
     }
   }
