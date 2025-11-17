@@ -1,3 +1,41 @@
+## [1.5.0](https://github.com/hallya/ds-api/compare/v1.4.3...v1.5.0) (2025-11-17)
+
+### Features
+
+* **args:** extract CLI argument parsing to separate module ([cd11042](https://github.com/hallya/ds-api/commit/cd110421731efb89c9e8d1021a352e17e3ed9387))
+* **cli-handler:** add optional path argument to --json flag ([f1aded1](https://github.com/hallya/ds-api/commit/f1aded10d303816f7c671763db93296c5901d441))
+* **config:** make NAS_URL, SYNOLOGY_USERNAME, BASE_PATH required ([e151e09](https://github.com/hallya/ds-api/commit/e151e09183c261939c6343a15d940c944a237523))
+
+### Bug Fixes
+
+* **cli-handler:** read version from jsr.json instead of package.json ([c467b4a](https://github.com/hallya/ds-api/commit/c467b4aceb59ca7233969b17a9252e2805515179))
+* **logger:** remove std/log dependencies ([7426288](https://github.com/hallya/ds-api/commit/742628821e90c932071c8e341283b3c257eb8de4))
+
+### Refactoring
+
+* **cli-handler:** update to use downloadRootPath ([510e6b4](https://github.com/hallya/ds-api/commit/510e6b4c510b4fe97bd9ad2d2c00140e4d8beb5b))
+* **config:** rename SYNOLOGY_BASE_PATH to SYNOLOGY_DOWNLOAD_ROOT_PATH ([7823cc7](https://github.com/hallya/ds-api/commit/7823cc78f03f3bf0a5e76b325059531514a7f44b))
+* **logger:** migrate from std/log to pino ([b887f99](https://github.com/hallya/ds-api/commit/b887f995fad1f0d8941e6b15997081a750bbe353))
+* **synology-ds:** unify path and basePath into downloadRootPath ([6f19a0c](https://github.com/hallya/ds-api/commit/6f19a0c8c6c905607a47f0f146f29969db7c3e38))
+
+### CI
+
+* **pre-commit:** add type check on staged files only ([ffc53a9](https://github.com/hallya/ds-api/commit/ffc53a9db83fbfa794da965247d6ee93e539111d))
+* **pre-push:** run tests on committed files only ([d5007a0](https://github.com/hallya/ds-api/commit/d5007a003f3c33f19c1138793b550b17e6f0d866))
+* **release:** add missing required env variables ([018718d](https://github.com/hallya/ds-api/commit/018718d66712b5cf7bed8038ba2e0e390c287c76))
+
+### Documentation
+
+* **readme:** add examples for --json with optional path argument ([75dbc8d](https://github.com/hallya/ds-api/commit/75dbc8d3c2c555369e8a02c7492f01e605f57502))
+* update documentation for SYNOLOGY_DOWNLOAD_ROOT_PATH ([5d117d5](https://github.com/hallya/ds-api/commit/5d117d5127da6328f641f1975a424ad3b3d46c29))
+
+### Tests
+
+* **cli-handler:** update tests for --json with optional path ([e52c8b1](https://github.com/hallya/ds-api/commit/e52c8b1ed03b028e881280305d69577764fd0de0))
+* **helpers:** add assertJsonFile helper to reduce duplication ([2950cc9](https://github.com/hallya/ds-api/commit/2950cc934a3b82466bd0588231a2b9ecf9a54e56))
+* **path-validation:** fix expected error message assertions ([fdbfe02](https://github.com/hallya/ds-api/commit/fdbfe027c228a56ccf931c9c184756dd32d451e2))
+* update tests to use downloadRootPath ([9c19fa8](https://github.com/hallya/ds-api/commit/9c19fa8d8f154654185185e72e76973eadf233cd))
+
 ## [1.4.3](https://github.com/hallya/ds-api/compare/v1.4.2...v1.4.3) (2025-11-17)
 
 ### CI
