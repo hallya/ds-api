@@ -1,3 +1,9 @@
+## [1.4.3](https://github.com/hallya/ds-api/compare/v1.4.2...v1.4.3) (2025-11-17)
+
+### CI
+
+* **release:** simplify workflow and sync package.json version ([b63f450](https://github.com/hallya/ds-api/commit/b63f450c75117df1cb5585c479d7f2e111201dbc))
+
 ## [1.4.2](https://github.com/hallya/ds-api/compare/v1.4.1...v1.4.2) (2025-11-17)
 
 ### CI
