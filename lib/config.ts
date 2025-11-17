@@ -7,7 +7,7 @@ import { z } from "npm:zod@^3.23.8";
 const configSchema = z.object({
   SYNOLOGY_USERNAME: z.string().min(1, "SYNOLOGY_USERNAME is required"),
   SYNOLOGY_PASSWORD: z.string().min(1, "SYNOLOGY_PASSWORD is required"),
-  SYNOLOGY_BASE_PATH: z.string().min(1, "SYNOLOGY_BASE_PATH is required"),
+  SYNOLOGY_DOWNLOAD_ROOT_PATH: z.string().min(1, "SYNOLOGY_DOWNLOAD_ROOT_PATH is required"),
   SYNOLOGY_DISABLE_SSL_VERIFICATION: z.enum(["true", "false"]).optional(),
   LOG_LEVEL: z.enum(["ERROR", "WARN", "INFO", "DEBUG"]).optional(),
   NAS_URL: z.string().url().min(1, "NAS_URL is required"),
@@ -36,7 +36,7 @@ function getConfig(): Config {
   validatedConfig = {
     synologyUsername: value.SYNOLOGY_USERNAME,
     synologyPassword: value.SYNOLOGY_PASSWORD,
-    synologyBasePath: value.SYNOLOGY_BASE_PATH,
+    downloadRootPath: value.SYNOLOGY_DOWNLOAD_ROOT_PATH,
     synologyDisableSslVerification: value.SYNOLOGY_DISABLE_SSL_VERIFICATION === "true",
     logLevel: (value.LOG_LEVEL || "INFO") as LevelName,
     nasUrl: value.NAS_URL,
@@ -55,8 +55,8 @@ export interface Config {
   synologyUsername: string;
   /** The password for Synology authentication. */
   synologyPassword: string;
-  /** The base path for Synology operations. */
-  synologyBasePath: string;
+  /** The root path for download operations and security validation. */
+  downloadRootPath: string;
   /** Whether to disable SSL verification. */
   synologyDisableSslVerification: boolean;
   /** The logging level (error, warn, info, debug). */
