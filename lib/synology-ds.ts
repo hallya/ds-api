@@ -15,13 +15,19 @@ import { retry } from "./retry.ts";
 import { join } from "std/path";
 
 /**
- * Options for SynologyDS constructor (internal type).
+ * Options for SynologyDS constructor.
+ * All fields are optional and will fall back to values from the injected config or default config.
  */
 export interface SynologyDSOptions {
+  /** The base URL for the Synology NAS (e.g., "https://nas.local:5001"). */
   baseUrl?: string;
+  /** The username for authentication. */
   username?: string;
+  /** The password for authentication. */
   password?: string;
+  /** The root path for download operations and security validation. */
   downloadRootPath?: string;
+  /** Configuration object to inject (primarily for testing). If not provided, uses default config. */
   config?: Config;
 }
 
@@ -69,6 +75,22 @@ export class SynologyDS {
     return this;
   }
 
+  /**
+   * Authenticates with the Synology NAS and returns a session ID.
+   * Uses concurrency protection to prevent multiple simultaneous authentication attempts.
+   * Automatically initializes API info if not already done.
+   * 
+   * @returns A promise that resolves to the session ID (SID) for authenticated requests.
+   * @throws If authentication fails (e.g., invalid credentials, network error).
+   * 
+   * @example
+   * ```ts
+   * const ds = new SynologyDS({ baseUrl: "https://nas.local", username: "user", password: "pass" });
+   * await ds.initialize();
+   * const sid = await ds.authenticate();
+   * // Use sid for authenticated API calls
+   * ```
+   */
   async authenticate(): Promise<string> {
     // If authentication is already in progress, wait for it
     if (this.#authenticatePromise) {
