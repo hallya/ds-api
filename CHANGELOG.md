@@ -1,3 +1,9 @@
+## [1.4.2](https://github.com/hallya/ds-api/compare/v1.4.1...v1.4.2) (2025-11-17)
+
+### CI
+
+* **release:** improve tag-based release detection ([d9aed91](https://github.com/hallya/ds-api/commit/d9aed91d407e3d62557015d4e201a3704634b847))
+
 ## [1.4.1](https://github.com/hallya/ds-api/compare/v1.4.0...v1.4.1) (2025-11-17)
 
 ### Bug Fixes
