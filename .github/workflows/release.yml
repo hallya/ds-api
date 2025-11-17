@@ -28,13 +28,13 @@ jobs:
           SYNOLOGY_PASSWORD: ${{ vars.SYNOLOGY_PASSWORD || 'test' }}
         run: |
           set -eu
-          # Fichier .env.test (utile si ton code charge un .env.*)
+
           {
             echo "LOG_LEVEL=${LOG_LEVEL}"
             echo "NAS_URL=${NAS_URL}"
             echo "SYNOLOGY_PASSWORD=${SYNOLOGY_PASSWORD}"
           } > .env.test
-          # Exporter pour les commandes de la suite (deno, pnpm)
+
           echo "LOG_LEVEL=${LOG_LEVEL}" >> $GITHUB_ENV
           echo "NAS_URL=${NAS_URL}" >> $GITHUB_ENV
           echo "SYNOLOGY_PASSWORD=${SYNOLOGY_PASSWORD}" >> $GITHUB_ENV
@@ -67,30 +67,35 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Get version before release
-        id: before
-        run: |
-          git fetch --tags --force
-          echo "version=$(git describe --tags --abbrev=0 2>/dev/null || echo '')" >> $GITHUB_OUTPUT
-
       - name: Release
+        id: release
         env:
           GITHUB_TOKEN: ${{ github.token }}
           SKIP_PREPUBLISH: "1"
-        run: pnpm dlx semantic-release
-
-      - name: Check if new version was released
-        id: after
         run: |
           git fetch --tags --force
-          NEW_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo '')
-          if [ "$NEW_VERSION" != "${{ steps.before.outputs.version }}" ] && [ -n "$NEW_VERSION" ]; then
+          TAGS_BEFORE=$(git tag --list | sort -V | tail -1 || echo "")
+
+          pnpm dlx semantic-release || true
+
+          git fetch --tags --force
+          TAGS_AFTER=$(git tag --list | sort -V | tail -1 || echo "")
+
+          if [ "$TAGS_AFTER" != "$TAGS_BEFORE" ] && [ -n "$TAGS_AFTER" ]; then
             echo "released=true" >> $GITHUB_OUTPUT
-            echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
-          else
-            echo "released=false" >> $GITHUB_OUTPUT
+            VERSION=$(echo "$TAGS_AFTER" | sed 's/^v//')
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+          else            
+            COMMIT_MSG=$(git log -1 --pretty=%B)
+            if echo "$COMMIT_MSG" | grep -q "^chore(release):"; then
+              echo "released=true" >> $GITHUB_OUTPUT
+              VERSION=$(echo "$COMMIT_MSG" | sed -n 's/^chore(release): \([0-9]\+\.[0-9]\+\.[0-9]\+\).*/\1/p')
+              echo "version=$VERSION" >> $GITHUB_OUTPUT
+            else
+              echo "released=false" >> $GITHUB_OUTPUT
+            fi
           fi
 
       - name: Publish to JSR
-        if: steps.after.outputs.released == 'true'
+        if: steps.release.outputs.released == 'true'
         run: deno publish
