@@ -16,6 +16,7 @@ import {
 import { SynologyDS } from "../../lib/synology-ds.ts";
 import { createTempDir } from "../helpers/setup.ts";
 import { join } from "std/path";
+import config from "../../lib/config.ts";
 
 Deno.test("file-operations", async (t) => {
 	await t.step("deleteFromSystem", async (t) => {
@@ -26,7 +27,7 @@ Deno.test("file-operations", async (t) => {
 				await Deno.writeTextFile(testFile, "test content");
 
 				const ds = new SynologyDS({
-					baseUrl: "https://example.com",
+					baseUrl: config.nasUrl,
 					username: "test",
 					password: "test",
 					basePath: tempDir,
@@ -57,7 +58,7 @@ Deno.test("file-operations", async (t) => {
 				await Deno.writeTextFile(join(testDir, "file.txt"), "content");
 
 				const ds = new SynologyDS({
-					baseUrl: "https://example.com",
+					baseUrl: config.nasUrl,
 					username: "test",
 					password: "test",
 					basePath: tempDir,
@@ -91,7 +92,7 @@ Deno.test("file-operations", async (t) => {
 				await Deno.writeTextFile(file3, "content3");
 
 				const ds = new SynologyDS({
-					baseUrl: "https://example.com",
+					baseUrl: config.nasUrl,
 					username: "test",
 					password: "test",
 					basePath: tempDir,
@@ -124,7 +125,7 @@ Deno.test("file-operations", async (t) => {
 			const { path: tempDir, cleanup } = await createTempDir();
 			try {
 				const ds = new SynologyDS({
-					baseUrl: "https://example.com",
+					baseUrl: config.nasUrl,
 					username: "test",
 					password: "test",
 					basePath: tempDir,
@@ -149,7 +150,7 @@ Deno.test("file-operations", async (t) => {
 				await Deno.writeTextFile(existingFile, "content");
 
 				const ds = new SynologyDS({
-					baseUrl: "https://example.com",
+					baseUrl: config.nasUrl,
 					username: "test",
 					password: "test",
 					basePath: tempDir,
@@ -180,7 +181,7 @@ Deno.test("file-operations", async (t) => {
 				const { path: tempDir, cleanup } = await createTempDir();
 				try {
 					const ds = new SynologyDS({
-						baseUrl: "https://example.com",
+						baseUrl: config.nasUrl,
 						username: "test",
 						password: "test",
 						basePath: tempDir,
@@ -210,7 +211,7 @@ Deno.test("file-operations", async (t) => {
 				const { path: tempDir, cleanup } = await createTempDir();
 				try {
 					const ds = new SynologyDS({
-						baseUrl: "https://example.com",
+						baseUrl: config.nasUrl,
 						username: "test",
 						password: "test",
 						basePath: tempDir,
@@ -233,7 +234,7 @@ Deno.test("file-operations", async (t) => {
 
 		await t.step("throws error when basePath is not configured", async () => {
 			const ds = new SynologyDS({
-				baseUrl: "https://example.com",
+				baseUrl: config.nasUrl,
 				username: "test",
 				password: "test",
 				basePath: "",
@@ -258,7 +259,7 @@ Deno.test("file-operations", async (t) => {
 				await Deno.writeTextFile(testFile, "content");
 
 				const ds = new SynologyDS({
-					baseUrl: "https://example.com",
+					baseUrl: config.nasUrl,
 					username: "test",
 					password: "test",
 					basePath: tempDir,
@@ -290,7 +291,7 @@ Deno.test("file-operations", async (t) => {
 				await Deno.writeTextFile(testFile, "content");
 
 				const ds = new SynologyDS({
-					baseUrl: "https://example.com",
+					baseUrl: config.nasUrl,
 					username: "test",
 					password: "test",
 					basePath: tempDir,

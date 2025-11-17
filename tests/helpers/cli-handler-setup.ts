@@ -5,10 +5,7 @@
  */
 
 import { mockFetch } from "@test-setup";
-import {
-  CLIHandler,
-  type CLIHandlerOptions,
-} from "../../lib/cli-handler.ts";
+import { CLIHandler, type CLIHandlerOptions } from "../../lib/cli-handler.ts";
 import {
   createApiInfoResponse,
   createLoginResponse,
@@ -16,6 +13,14 @@ import {
   createDeleteResponse,
 } from "./api-response-factory.ts";
 import type { ApiInfo, LoginResponse, Task } from "../../lib/types/index.ts";
+import config from "../../lib/config.ts";
+
+/**
+ * Gets the NAS URL from config (from .env.test in tests).
+ */
+if (!config.nasUrl) {
+  throw new Error("NAS_URL is not configured in .env.test");
+}
 
 /**
  * Sets up common API mocks for CLIHandler tests.
@@ -28,17 +33,17 @@ export function setupApiMocks(overrides?: {
   loginResp?: LoginResponse;
 }): void {
   const apiInfo = overrides?.apiInfo ?? createApiInfoResponse();
-  const loginResp = overrides?.loginResp ??
-    createLoginResponse("test-session-id");
+  const loginResp =
+    overrides?.loginResp ?? createLoginResponse("test-session-id");
 
-  mockFetch("https://example.com/webapi/query.cgi*", {
+  mockFetch(`${config.nasUrl}/webapi/query.cgi*`, {
     body: JSON.stringify({
       success: true,
       data: apiInfo,
     }),
   });
 
-  mockFetch("https://example.com/webapi/auth.cgi*", {
+  mockFetch(`${config.nasUrl}/webapi/auth.cgi*`, {
     body: JSON.stringify(loginResp),
   });
 }
@@ -50,11 +55,11 @@ export function setupApiMocks(overrides?: {
  * @returns An authenticated CLIHandler instance.
  */
 export async function createAuthenticatedHandler(
-  options: CLIHandlerOptions = {},
+  options: CLIHandlerOptions = {}
 ): Promise<CLIHandler> {
   setupApiMocks();
   const handler = new CLIHandler({
-    baseUrl: "https://example.com",
+    baseUrl: config.nasUrl,
     username: "test",
     ...options,
   });
@@ -70,7 +75,7 @@ export async function createAuthenticatedHandler(
  */
 export function mockTaskListResponse(tasks: Task[]): void {
   const tasksResponse = createTasksListResponse(tasks);
-  mockFetch("https://example.com/webapi/DownloadStation/task.cgi*", {
+  mockFetch(`${config.nasUrl}/webapi/DownloadStation/task.cgi*`, {
     body: JSON.stringify(tasksResponse),
   });
 }
@@ -82,7 +87,7 @@ export function mockTaskListResponse(tasks: Task[]): void {
  */
 export function mockDeleteResponse(taskIds: string[]): void {
   const deleteResp = createDeleteResponse(taskIds);
-  mockFetch("https://example.com/webapi/DownloadStation/task.cgi*", {
+  mockFetch(`${config.nasUrl}/webapi/DownloadStation/task.cgi*`, {
     body: JSON.stringify(deleteResp),
   });
 }
