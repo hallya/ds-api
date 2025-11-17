@@ -18,7 +18,7 @@ import type { PurgeResult } from "./types/index.ts";
 export interface CLIHandlerOptions {
   baseUrl?: string;
   username?: string;
-  path?: string;
+  downloadRootPath?: string;
 }
 
 /**
@@ -34,10 +34,10 @@ export class CLIHandler {
    * @param options - Configuration options for the SynologyDS instance.
    * @param options.baseUrl - The base URL for the NAS.
    * @param options.username - The username for authentication.
-   * @param options.path - The base path for file operations.
+   * @param options.downloadRootPath - The root path for download operations.
    */
   constructor(options: CLIHandlerOptions = {}) {
-    this.ds = new SynologyDS({ ...options, basePath: options.path });
+    this.ds = new SynologyDS({ ...options });
     this.isDryRun = true;
     this.jsonPath = undefined;
   }
