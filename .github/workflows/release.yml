@@ -25,19 +25,25 @@ jobs:
         env:
           LOG_LEVEL: ${{ vars.LOG_LEVEL || 'ERROR' }}
           NAS_URL: ${{ vars.NAS_URL || 'https://example.com' }}
+          SYNOLOGY_USERNAME: ${{ vars.SYNOLOGY_USERNAME || 'test' }}
           SYNOLOGY_PASSWORD: ${{ vars.SYNOLOGY_PASSWORD || 'test' }}
+          SYNOLOGY_DOWNLOAD_ROOT_PATH: ${{ vars.SYNOLOGY_DOWNLOAD_ROOT_PATH || '/tmp/test-downloads' }}
         run: |
           set -eu
 
           {
             echo "LOG_LEVEL=${LOG_LEVEL}"
             echo "NAS_URL=${NAS_URL}"
+            echo "SYNOLOGY_USERNAME=${SYNOLOGY_USERNAME}"
             echo "SYNOLOGY_PASSWORD=${SYNOLOGY_PASSWORD}"
+            echo "SYNOLOGY_DOWNLOAD_ROOT_PATH=${SYNOLOGY_DOWNLOAD_ROOT_PATH}"
           } > .env.test
 
           echo "LOG_LEVEL=${LOG_LEVEL}" >> $GITHUB_ENV
           echo "NAS_URL=${NAS_URL}" >> $GITHUB_ENV
+          echo "SYNOLOGY_USERNAME=${SYNOLOGY_USERNAME}" >> $GITHUB_ENV
           echo "SYNOLOGY_PASSWORD=${SYNOLOGY_PASSWORD}" >> $GITHUB_ENV
+          echo "SYNOLOGY_DOWNLOAD_ROOT_PATH=${SYNOLOGY_DOWNLOAD_ROOT_PATH}" >> $GITHUB_ENV
 
       - uses: pnpm/action-setup@v4
         with:
