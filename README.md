@@ -198,7 +198,9 @@ ds-api list
 
 **Export data**: Get torrents data in JSON format for scripting
 ```bash
-ds-api list --json  # Creates torrents.json file
+ds-api list --json                    # Creates torrents.json file
+ds-api list --json /path/to/dir       # Creates /path/to/dir/torrents.json
+ds-api list --json /path/to/file.json  # Creates /path/to/file.json
 ```
 
 **Investigate issues**: Get detailed info about a specific torrent
