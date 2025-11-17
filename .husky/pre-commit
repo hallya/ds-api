@@ -1,0 +1,45 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "Running type check on staged files..."
+
+# Stash unstaged changes temporarily (keep staged files)
+HAS_UNSTAGED=$(git diff --name-only | wc -l)
+if [ "$HAS_UNSTAGED" -gt 0 ]; then
+  echo "Stashing unstaged changes..."
+  git stash push --keep-index -m "husky pre-commit stash" --quiet
+  STASHED=1
+else
+  STASHED=0
+fi
+
+# Get staged TypeScript/JavaScript files
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(ts|tsx|js|jsx)$' || true)
+
+if [ -z "$STAGED_FILES" ]; then
+  echo "No TypeScript/JavaScript files staged. Skipping type check."
+  # Restore unstaged changes if stashed
+  if [ "$STASHED" -eq 1 ]; then
+    echo "Restoring unstaged changes..."
+    git stash pop --quiet
+  fi
+  exit 0
+fi
+
+# Run deno check on staged files
+echo "$STAGED_FILES" | xargs deno check
+CHECK_EXIT=$?
+
+# Restore unstaged changes if stashed
+if [ "$STASHED" -eq 1 ]; then
+  echo "Restoring unstaged changes..."
+  git stash pop --quiet
+fi
+
+if [ $CHECK_EXIT -ne 0 ]; then
+  echo ""
+  echo "❌ Type check failed. Please fix errors before committing."
+  exit 1
+fi
+
+echo "✅ Type check passed."
