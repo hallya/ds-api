@@ -31,17 +31,25 @@ Deno.test("cli-handler", async (t) => {
     assertEquals(Array.isArray(result), true, "Should return an array");
     result.forEach((task: Task, index: number) => {
       assertEquals(typeof task.id, "string", `Task ${index} should have an id`);
-      assertEquals(typeof task.title, "string", `Task ${index} should have a title`);
-      assertEquals(typeof task.size, "number", `Task ${index} should have a size`);
+      assertEquals(
+        typeof task.title,
+        "string",
+        `Task ${index} should have a title`
+      );
+      assertEquals(
+        typeof task.size,
+        "number",
+        `Task ${index} should have a size`
+      );
     });
   });
 
-  await t.step("handleList with JSON output", async () => {
+  await t.step("handleList with JSON output (default path)", async () => {
     const tasks = createTaskList(2);
     mockTaskListResponse(tasks);
 
     const handler = await createAuthenticatedHandler();
-    handler.setJson(true);
+    handler.setJson("");
     const result = await handler.handleList();
 
     assertEquals(result.length, 2, "Should return 2 tasks");
@@ -49,11 +57,78 @@ Deno.test("cli-handler", async (t) => {
 
     const jsonContent = await Deno.readTextFile("torrents.json");
     const parsed = JSON.parse(jsonContent);
-    assertEquals(Array.isArray(parsed), true, "JSON file should contain an array");
+    assertEquals(
+      Array.isArray(parsed),
+      true,
+      "JSON file should contain an array"
+    );
     assertEquals(parsed.length, 2, "JSON file should contain 2 tasks");
-    assertEquals(parsed.length, result.length, "JSON file should have same number of tasks as return value");
+    assertEquals(
+      parsed.length,
+      result.length,
+      "JSON file should have same number of tasks as return value"
+    );
 
     await Deno.remove("torrents.json");
+  });
+
+  await t.step("handleList with JSON output (custom directory)", async () => {
+    const tasks = createTaskList(2);
+    mockTaskListResponse(tasks);
+
+    const handler = await createAuthenticatedHandler();
+    handler.setJson("test-output-dir");
+    const result = await handler.handleList();
+
+    assertEquals(result.length, 2, "Should return 2 tasks");
+    assertEquals(Array.isArray(result), true, "Should return an array");
+
+    const jsonContent = await Deno.readTextFile(
+      "test-output-dir/torrents.json"
+    );
+    const parsed = JSON.parse(jsonContent);
+    assertEquals(
+      Array.isArray(parsed),
+      true,
+      "JSON file should contain an array"
+    );
+    assertEquals(parsed.length, 2, "JSON file should contain 2 tasks");
+    assertEquals(
+      parsed.length,
+      result.length,
+      "JSON file should have same number of tasks as return value"
+    );
+
+    await Deno.remove("test-output-dir/torrents.json");
+    await Deno.remove("test-output-dir");
+  });
+
+  await t.step("handleList with JSON output (custom file path)", async () => {
+    const tasks = createTaskList(2);
+    mockTaskListResponse(tasks);
+
+    const handler = await createAuthenticatedHandler();
+    handler.setJson("custom-output.json");
+    const result = await handler.handleList();
+
+    assertEquals(result.length, 2, "Should return 2 tasks");
+    assertEquals(Array.isArray(result), true, "Should return an array");
+
+    const jsonContent = await Deno.readTextFile("custom-output.json");
+    const parsed = JSON.parse(jsonContent);
+    assertEquals(
+      Array.isArray(parsed),
+      true,
+      "JSON file should contain an array"
+    );
+    assertEquals(parsed.length, 2, "JSON file should contain 2 tasks");
+    assertEquals(
+      parsed.length,
+      result.length,
+      "JSON file should have same number of tasks as return value"
+    );
+
+    await Deno.remove("custom-output.json");
   });
 
   await t.step("handleRemove", async () => {
@@ -70,7 +145,11 @@ Deno.test("cli-handler", async (t) => {
 
     assertEquals(result.length, 1, "Should return one deletion result");
     assertEquals(result[0].id, "task1", "Should return result for task1");
-    assertEquals(result[0].error, 0, "Should indicate successful deletion (error code 0)");
+    assertEquals(
+      result[0].error,
+      0,
+      "Should indicate successful deletion (error code 0)"
+    );
   });
 
   await t.step("handlePurge", async () => {
@@ -86,10 +165,26 @@ Deno.test("cli-handler", async (t) => {
     const result = await handler.handlePurge("1.5");
 
     assertEquals(result.tasksToPurge.length, 2, "Should purge 2 tasks");
-    assertEquals(result.tasksToPurge[0].id, "task1", "First task should be task1");
-    assertEquals(result.tasksToPurge[1].id, "task2", "Second task should be task2");
-    assertEquals(typeof result.totalSize, "number", "totalSize should be a number");
-    assertEquals(result.totalSize > 0, true, "totalSize should be greater than 0");
+    assertEquals(
+      result.tasksToPurge[0].id,
+      "task1",
+      "First task should be task1"
+    );
+    assertEquals(
+      result.tasksToPurge[1].id,
+      "task2",
+      "Second task should be task2"
+    );
+    assertEquals(
+      typeof result.totalSize,
+      "number",
+      "totalSize should be a number"
+    );
+    assertEquals(
+      result.totalSize > 0,
+      true,
+      "totalSize should be greater than 0"
+    );
   });
 
   await t.step("handleInfo", async () => {
@@ -100,7 +195,11 @@ Deno.test("cli-handler", async (t) => {
     const result = await handler.handleInfo("Torrent 1");
 
     assertEquals(result.id, "task1", "Should return task1");
-    assertEquals(result.title, "Torrent 1", "Should return task with title 'Torrent 1'");
+    assertEquals(
+      result.title,
+      "Torrent 1",
+      "Should return task with title 'Torrent 1'"
+    );
     assertEquals(typeof result.size, "number", "size should be a number");
     assertEquals(typeof result.status, "string", "status should be a string");
     assertEquals(typeof result.type, "string", "type should be a string");
