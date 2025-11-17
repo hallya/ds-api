@@ -1,10 +1,44 @@
-echo "Running type check before push..."
-deno check --all
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
 
-if [ $? -ne 0 ]; then
-  echo "❌ Type check failed. Please fix errors before pushing."
+echo "Running all tests before push..."
+
+# Save list of staged files
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM || true)
+
+# Stash all changes (staged and unstaged) temporarily
+# This ensures tests run only on committed files
+HAS_CHANGES=$(git diff --name-only | wc -l)
+HAS_STAGED=$(git diff --cached --name-only | wc -l)
+
+if [ "$HAS_CHANGES" -gt 0 ] || [ "$HAS_STAGED" -gt 0 ]; then
+  echo "Stashing all changes (staged and unstaged)..."
+  git stash push --include-untracked -m "husky pre-push stash" --quiet
+  STASHED=1
+else
+  STASHED=0
+fi
+
+# Run all tests
+deno task test
+TEST_EXIT=$?
+
+# Restore all changes if stashed
+if [ "$STASHED" -eq 1 ]; then
+  echo "Restoring all changes..."
+  git stash pop --quiet
+  
+  # Restore staged state for files that were staged
+  if [ -n "$STAGED_FILES" ]; then
+    echo "$STAGED_FILES" | xargs git add --quiet 2>/dev/null || true
+  fi
+fi
+
+if [ $TEST_EXIT -ne 0 ]; then
+  echo ""
+  echo "❌ Tests failed! Push blocked."
+  echo "Please fix the failing tests before pushing."
   exit 1
 fi
 
-echo "✅ Type check passed."
-
+echo "✅ All tests passed. Proceeding with push..."
