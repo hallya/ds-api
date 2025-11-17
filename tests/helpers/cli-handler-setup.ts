@@ -4,6 +4,7 @@
  * Provides reusable functions to reduce duplication in test setup.
  */
 
+import { assertEquals } from "std/assert";
 import { mockFetch } from "@test-setup";
 import { CLIHandler, type CLIHandlerOptions } from "../../lib/cli-handler.ts";
 import {
@@ -90,4 +91,22 @@ export function mockDeleteResponse(taskIds: string[]): void {
   mockFetch(`${config.nasUrl}/webapi/DownloadStation/task.cgi*`, {
     body: JSON.stringify(deleteResp),
   });
+}
+
+/**
+ * Asserts that a JSON file exists and contains the expected tasks.
+ *
+ * @param filePath - Path to the JSON file to verify.
+ * @param expectedCount - Expected number of tasks in the file.
+ * @returns The parsed tasks array.
+ */
+export async function assertJsonFile(
+  filePath: string,
+  expectedCount: number,
+): Promise<Task[]> {
+  const jsonContent = await Deno.readTextFile(filePath);
+  const parsed = JSON.parse(jsonContent);
+  assertEquals(Array.isArray(parsed), true, "JSON file should contain an array");
+  assertEquals(parsed.length, expectedCount, `JSON file should contain ${expectedCount} task(s)`);
+  return parsed;
 }
