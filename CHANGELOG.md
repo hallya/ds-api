@@ -1,3 +1,19 @@
+## [1.5.3](https://github.com/hallya/ds-api/compare/v1.5.2...v1.5.3) (2025-11-17)
+
+### Bug Fixes
+
+* **synology-ds:** use full path for system deletion ([8c23121](https://github.com/hallya/ds-api/commit/8c2312157b8dfb32e2ed9614c0d99d508ae04060))
+
+### Refactoring
+
+* **tests:** improve maintainability and reduce cognitive complexity ([7ec7399](https://github.com/hallya/ds-api/commit/7ec7399b373998025552f4dc81c3dcb7157f2a94))
+* **test:** use setup helpers in synology-ds tests ([92823bd](https://github.com/hallya/ds-api/commit/92823bd0fde89915b4de0bfa1f4fcf751e3ab63f))
+
+### Tests
+
+* **setup:** add synology-ds test setup helpers ([ea6837a](https://github.com/hallya/ds-api/commit/ea6837a5a9bbbce8b1bfad57ce0926a6ba9d35b8))
+* **synology-ds:** verify full path used for deletion ([36130bf](https://github.com/hallya/ds-api/commit/36130bf09daaf95ac230186060e4a2d91a696c25))
+
 ## [1.5.2](https://github.com/hallya/ds-api/compare/v1.5.1...v1.5.2) (2025-11-17)
 
 ### CI
