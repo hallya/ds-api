@@ -1,3 +1,9 @@
+## [1.5.2](https://github.com/hallya/ds-api/compare/v1.5.1...v1.5.2) (2025-11-17)
+
+### CI
+
+* **pre-push:** make deno test output quiet ([52ee4e8](https://github.com/hallya/ds-api/commit/52ee4e8a13d17d087ec59c0604694a4e7be56a75))
+
 ## [1.5.1](https://github.com/hallya/ds-api/compare/v1.5.0...v1.5.1) (2025-11-17)
 
 ### Documentation
