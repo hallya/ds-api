@@ -18,8 +18,8 @@ else
   STASHED=0
 fi
 
-# Run all tests with silent logs
-LOG_LEVEL=SILENT deno task test
+# Run all tests with silent logs and quiet output
+LOG_LEVEL=SILENT deno test --allow-all --env-file=.env.test --quiet
 TEST_EXIT=$?
 
 # Restore all changes if stashed
