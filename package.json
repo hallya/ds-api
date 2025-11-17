@@ -16,7 +16,7 @@
     "info": "deno run --allow-all bin/cli.ts info",
     "commit": "cz",
     "prepublishOnly": "deno test --allow-all",
-    "test": "deno test --allow-all",
+    "test": "deno test --allow-all --env-file=.env.test",
     "prepare": "husky"
   },
   "keywords": [

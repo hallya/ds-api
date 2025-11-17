@@ -8,35 +8,33 @@
 import "@test-setup";
 
 import { assertEquals, assertRejects } from "std/assert";
-import { mockFetch } from "@test-setup";
-import { SynologyDS } from "../../../lib/synology-ds.ts";
+import { join } from "std/path";
 import {
-  createApiInfoResponse,
-  createLoginResponse,
-  createTasksListResponse,
-  createDeleteResponse,
-} from "../../helpers/api-response-factory.ts";
+  setupApiMocks,
+  mockQueryEndpoint,
+  createAuthenticatedDS,
+  mockTaskListResponse,
+  mockDeleteResponse,
+  setupPurgeMocks,
+} from "../../helpers/synology-ds-setup.ts";
+import { SynologyDS } from "../../../lib/synology-ds.ts";
+import config from "../../../lib/config.ts";
 import {
   createTaskList,
   createTaskForPurgeTest,
+  createMinimalTaskDetail,
 } from "../../helpers/task-factory.ts";
-import config from "../../../lib/config.ts";
+import { createTempDir } from "../../helpers/setup.ts";
 
 Deno.test("synology-ds", async (t) => {
   await t.step("initialize", async () => {
-    mockFetch(`${config.nasUrl}/webapi/query.cgi*`, {
-      body: JSON.stringify({
-        success: true,
-        data: createApiInfoResponse(),
-      }),
-    });
+    mockQueryEndpoint();
 
     const ds = new SynologyDS({
       baseUrl: config.nasUrl,
       username: "test",
       password: "test",
     });
-
     await ds.initialize();
 
     assertEquals(ds.apiInfo !== null, true);
@@ -44,62 +42,21 @@ Deno.test("synology-ds", async (t) => {
   });
 
   await t.step("authenticate", async () => {
-    const apiInfo = createApiInfoResponse();
-    const loginResp = createLoginResponse("test-session-id");
+    setupApiMocks();
 
-    mockFetch(`${config.nasUrl}/webapi/query.cgi*`, {
-      body: JSON.stringify({
-        success: true,
-        data: apiInfo,
-      }),
-    });
-
-    mockFetch(`${config.nasUrl}/webapi/auth.cgi*`, {
-      body: JSON.stringify(loginResp),
-    });
-
-    const ds = new SynologyDS({
-      baseUrl: config.nasUrl,
-      username: "test",
-      password: "test",
-    });
-
-    await ds.initialize();
-    const sid = await ds.authenticate();
+    const ds = await createAuthenticatedDS({});
+    const sid = ds.sid!;
 
     assertEquals(sid, "test-session-id");
     assertEquals(ds.sid, "test-session-id");
   });
 
   await t.step("getTasks", async () => {
-    const apiInfo = createApiInfoResponse();
-    const loginResp = createLoginResponse("test-session-id");
     const tasks = createTaskList(3);
-    const tasksResponse = createTasksListResponse(tasks);
+    setupApiMocks();
+    mockTaskListResponse(tasks);
 
-    mockFetch(`${config.nasUrl}/webapi/query.cgi*`, {
-      body: JSON.stringify({
-        success: true,
-        data: apiInfo,
-      }),
-    });
-
-    mockFetch(`${config.nasUrl}/webapi/auth.cgi*`, {
-      body: JSON.stringify(loginResp),
-    });
-
-    mockFetch(`${config.nasUrl}/webapi/DownloadStation/task.cgi*`, {
-      body: JSON.stringify(tasksResponse),
-    });
-
-    const ds = new SynologyDS({
-      baseUrl: config.nasUrl,
-      username: "test",
-      password: "test",
-    });
-
-    await ds.initialize();
-    await ds.authenticate();
+    const ds = await createAuthenticatedDS({});
     const retrievedTasks = await ds.getTasks();
 
     assertEquals(retrievedTasks.length, 3);
@@ -107,33 +64,10 @@ Deno.test("synology-ds", async (t) => {
   });
 
   await t.step("removeTasksByIds", async () => {
-    const apiInfo = createApiInfoResponse();
-    const loginResp = createLoginResponse("test-session-id");
-    const deleteResp = createDeleteResponse(["task1", "task2"]);
+    setupApiMocks();
+    mockDeleteResponse(["task1", "task2"]);
 
-    mockFetch(`${config.nasUrl}/webapi/query.cgi*`, {
-      body: JSON.stringify({
-        success: true,
-        data: apiInfo,
-      }),
-    });
-
-    mockFetch(`${config.nasUrl}/webapi/auth.cgi*`, {
-      body: JSON.stringify(loginResp),
-    });
-
-    mockFetch(`${config.nasUrl}/webapi/DownloadStation/task.cgi*`, {
-      body: JSON.stringify(deleteResp),
-    });
-
-    const ds = new SynologyDS({
-      baseUrl: config.nasUrl,
-      username: "test",
-      password: "test",
-    });
-
-    await ds.initialize();
-    await ds.authenticate();
+    const ds = await createAuthenticatedDS({});
     const results = await ds.removeTasksByIds(["task1", "task2"]);
 
     assertEquals(results.length, 2);
@@ -144,44 +78,14 @@ Deno.test("synology-ds", async (t) => {
   });
 
   await t.step("purgeTasksBySize", async () => {
-    const apiInfo = createApiInfoResponse();
-    const loginResp = createLoginResponse("test-session-id");
-
     const tasks = [
       createTaskForPurgeTest(1, 0.001, 1, { id: "task1" }),
       createTaskForPurgeTest(2, 0.002, 2, { id: "task2" }),
       createTaskForPurgeTest(3, 0.003, 3, { id: "task3" }),
     ];
-    const tasksResponse = createTasksListResponse(tasks);
-    const deleteResp = createDeleteResponse(["task1", "task2"]);
+    setupPurgeMocks(tasks, ["task1", "task2"]);
 
-    mockFetch(`${config.nasUrl}/webapi/query.cgi*`, {
-      body: JSON.stringify({
-        success: true,
-        data: apiInfo,
-      }),
-    });
-
-    mockFetch(`${config.nasUrl}/webapi/auth.cgi*`, {
-      body: JSON.stringify(loginResp),
-    });
-
-    mockFetch(`${config.nasUrl}/webapi/DownloadStation/task.cgi*`, {
-      body: JSON.stringify(tasksResponse),
-    });
-
-    mockFetch(`${config.nasUrl}/webapi/DownloadStation/task.cgi*`, {
-      body: JSON.stringify(deleteResp),
-    });
-
-    const ds = new SynologyDS({
-      baseUrl: config.nasUrl,
-      username: "test",
-      password: "test",
-    });
-
-    await ds.initialize();
-    await ds.authenticate();
+    const ds = await createAuthenticatedDS({});
     const result = await ds.purgeTasksBySize(2.5, false);
 
     assertEquals(result.tasksToPurge.length, 2);
