@@ -47,11 +47,20 @@ export class CLIHandler {
    */
   async initialize(): Promise<CLIHandler> {
     try {
-      const packageJsonText = await Deno.readTextFile("package.json");
-      const packageJson = JSON.parse(packageJsonText);
-      logger.info(`Starting ds-api version ${packageJson.version}`);
+      let version: string | undefined;
+      try {
+        const jsrJsonText = await Deno.readTextFile("jsr.json");
+        const jsrJson = JSON.parse(jsrJsonText);
+        version = jsrJson.version;
+      } catch {
+        const denoJsonText = await Deno.readTextFile("deno.json");
+        const denoJson = JSON.parse(denoJsonText);
+        version = denoJson.version;
+      }
+      if (version) {
+        logger.info(`Starting ds-api version ${version}`);
+      }
     } catch {
-      // If package.json is not found, continue without version info
       logger.info("Starting ds-api");
     }
 
