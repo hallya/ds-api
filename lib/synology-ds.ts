@@ -592,12 +592,20 @@ export class SynologyDS {
 
   /**
    * Extracts file paths from tasks.
+   * Constructs the full path by combining destination and task title.
    * @param tasks - Array of task objects.
    * @returns Array of valid file paths.
    */
   #extractPathsFromTasks(tasks: Task[]): string[] {
     return tasks
-      .map((task) => task.additional?.detail?.destination)
+      .map((task) => {
+        const destination = task.additional?.detail?.destination;
+        const title = task.title;
+        if (destination && title) {
+          return `${destination}/${title}`;
+        }
+        return undefined;
+      })
       .filter((path): path is string => path !== undefined);
   }
 
@@ -617,14 +625,17 @@ export class SynologyDS {
 
   /**
    * Creates a map from paths to tasks for efficient lookup.
+   * Constructs the full path by combining destination and task title.
    * @param tasks - Array of task objects.
    * @returns Map of paths to tasks.
    */
   #createPathToTaskMap(tasks: Task[]): Map<string, Task> {
     const map = new Map<string, Task>();
     tasks.forEach((task) => {
-      const path = task.additional?.detail?.destination;
-      if (path) {
+      const destination = task.additional?.detail?.destination;
+      const title = task.title;
+      if (destination && title) {
+        const path = `${destination}/${title}`;
         map.set(path, task);
       }
     });
