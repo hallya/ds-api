@@ -17,6 +17,7 @@ npm install @hallya/ds-api
 ### Quick Setup
 
 1. Copy `.env.example` to `.env` and configure your settings:
+
    ```bash
    cp .env.example .env
    ```
@@ -35,14 +36,14 @@ npm install @hallya/ds-api
 #### Simple API (recommended)
 
 ```javascript
-import { SynologyDS } from '@hallya/ds-api';
+import { SynologyDS } from "@hallya/ds-api";
 
 async function example() {
   // Initialize with configuration
   const ds = await new SynologyDS({
-    baseUrl: 'https://your-nas-url',
-    username: 'your-username',
-    password: 'your-password'
+    baseUrl: "https://your-nas-url",
+    username: "your-username",
+    password: "your-password",
   }).initialize();
 
   // Authenticate with the NAS
@@ -50,7 +51,7 @@ async function example() {
 
   // Get all tasks sorted by upload size and completion time
   const tasks = await ds.getTasksByUploadAndTime();
-  console.log('Tasks:', tasks);
+  console.log("Tasks:", tasks);
 
   // Remove tasks until total size is 10.5 GB or more
   const result = await ds.purgeTasksBySize(10.5);
@@ -64,14 +65,15 @@ async function example() {
 #### Advanced Examples
 
 **Error handling and cleanup:**
+
 ```javascript
 async function safeExample() {
   let ds;
   try {
     ds = await new SynologyDS({
-      baseUrl: 'https://your-nas-url',
-      username: 'your-username',
-      password: 'your-password'
+      baseUrl: "https://your-nas-url",
+      username: "your-username",
+      password: "your-password",
     }).initialize();
 
     await ds.authenticate();
@@ -79,9 +81,8 @@ async function safeExample() {
     // Your operations here
     const tasks = await ds.getTasks();
     console.log(`Found ${tasks.length} tasks`);
-
   } catch (error) {
-    console.error('Operation failed:', error.message);
+    console.error("Operation failed:", error.message);
   } finally {
     if (ds) {
       await ds.disconnect();
@@ -91,22 +92,23 @@ async function safeExample() {
 ```
 
 **Working with specific tasks:**
+
 ```javascript
 async function taskManagement() {
   const ds = await new SynologyDS({
-    baseUrl: 'https://your-nas-url',
-    username: 'your-username',
-    password: 'your-password'
+    baseUrl: "https://your-nas-url",
+    username: "your-username",
+    password: "your-password",
   }).initialize();
 
   await ds.authenticate();
 
   // Get detailed info about a specific task
-  const taskInfo = await ds.getTaskInfo('ubuntu-22.04.iso');
-  console.log('Task details:', taskInfo);
+  const taskInfo = await ds.getTaskInfo("ubuntu-22.04.iso");
+  console.log("Task details:", taskInfo);
 
   // Remove tasks by title
-  await ds.removeTasksByTitles('old-movie.avi,expired-document.pdf');
+  await ds.removeTasksByTitles("old-movie.avi,expired-document.pdf");
 
   await ds.disconnect();
 }
@@ -122,15 +124,20 @@ import {
   removeTasks,
   logout,
   pickAuthVersion,
-  pickTaskVersion
-} from '@hallya/ds-api';
+  pickTaskVersion,
+} from "@hallya/ds-api";
 
 async function example() {
   const info = await getApiInfo();
   const authVer = pickAuthVersion(info);
   const taskVer = pickTaskVersion(info);
 
-  const loginResp = await login('username', 'password', 'DownloadStation', authVer);
+  const loginResp = await login(
+    "username",
+    "password",
+    "DownloadStation",
+    authVer
+  );
   const sid = loginResp.data.sid;
 
   const tasks = await listTasks(sid, taskVer);
@@ -154,7 +161,7 @@ npm install -g @hallya/ds-api
 npx ds-api
 ```
 
-```
+````
 
 #### Commands
 
@@ -177,26 +184,30 @@ ds-api purge "10.5" --dry-run
 
 # Show detailed information for a specific torrent
 ds-api info "torrent_title"
-```
+````
 
 #### Common Use Cases
 
 **Daily cleanup**: Remove torrents when disk space gets low
+
 ```bash
 ds-api purge "50"  # Remove torrents until total size is 50GB or more
 ```
 
 **Selective removal**: Remove specific completed torrents
+
 ```bash
 ds-api remove "ubuntu.iso,windows.iso"
 ```
 
 **Monitor downloads**: Check current download status
+
 ```bash
 ds-api list
 ```
 
 **Export data**: Get torrents data in JSON format for scripting
+
 ```bash
 ds-api list --json                    # Creates torrents.json file
 ds-api list --json /path/to/dir       # Creates /path/to/dir/torrents.json
@@ -204,6 +215,7 @@ ds-api list --json /path/to/file.json  # Creates /path/to/file.json
 ```
 
 **Investigate issues**: Get detailed info about a specific torrent
+
 ```bash
 ds-api info "problematic_torrent"
 ```
@@ -214,7 +226,7 @@ ds-api info "problematic_torrent"
 
 - `SYNOLOGY_USERNAME`: Synology username
 - `SYNOLOGY_PASSWORD`: Synology password (required)
-- `SYNOLOGY_BASE_PATH`: Base path for file operations (default: `/volume1`)
+- `SYNOLOGY_DOWNLOAD_ROOT_PATH`: Root path for download operations and security validation (default: `/volume1`)
 - `SYNOLOGY_DISABLE_SSL_VERIFICATION`: Set to `true` to disable SSL verification (default: `false`)
 - `LOG_LEVEL`: Logging level (`error`, `warn`, `info`, `debug`) (default: `info`)
 - `NAS_URL`: Synology NAS URL (default: `https://download.lcn-dlc.dev`)
@@ -227,9 +239,9 @@ When using the library programmatically, you can pass configuration options to t
 
 ```javascript
 const ds = new SynologyDS({
-  baseUrl: 'https://your-nas-url',
-  username: 'your-username',
-  path: '/custom/path'
+  baseUrl: "https://your-nas-url",
+  username: "your-username",
+  path: "/custom/path",
 });
 ```
 
@@ -238,6 +250,7 @@ const ds = new SynologyDS({
 ### Classes
 
 - `SynologyDS`: Main class for interacting with Synology Download Station
+
   - `constructor(options)`: Create instance with configuration
   - `initialize()`: Initialize API info
   - `authenticate()`: Login to Synology
@@ -295,16 +308,19 @@ const ds = new SynologyDS({
 ### Common Issues
 
 **Authentication failed**
+
 - Verify your Synology credentials are correct
 - Ensure your user has Download Station permissions
 - Check that Download Station package is installed and running
 
 **Connection timeout**
+
 - Verify the NAS URL is accessible
 - Check network connectivity
 - Try increasing `RETRY_ATTEMPTS` or `RETRY_DELAY`
 
 **SSL certificate errors**
+
 - Set `SYNOLOGY_DISABLE_SSL_VERIFICATION=true` for self-signed certificates
 - Or configure proper SSL certificates on your NAS
 
@@ -317,10 +333,11 @@ LOG_LEVEL=debug ds-api list
 ```
 
 Or programmatically:
+
 ```javascript
 const ds = new SynologyDS({
   // ... other options
-  logLevel: 'debug'
+  logLevel: "debug",
 });
 ```
 
@@ -346,6 +363,7 @@ The project uses automated releases via GitHub Actions:
    - GitHub Actions will automatically publish to npm
 
 **Manual release** (if needed):
+
 ```bash
 npm version patch  # or minor/major
 git push --follow-tags
