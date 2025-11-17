@@ -9,7 +9,7 @@ const configSchema = z.object({
   SYNOLOGY_PASSWORD: z.string().min(1, "SYNOLOGY_PASSWORD is required"),
   SYNOLOGY_DOWNLOAD_ROOT_PATH: z.string().min(1, "SYNOLOGY_DOWNLOAD_ROOT_PATH is required"),
   SYNOLOGY_DISABLE_SSL_VERIFICATION: z.enum(["true", "false"]).optional(),
-  LOG_LEVEL: z.enum(["ERROR", "WARN", "INFO", "DEBUG"]).optional(),
+  LOG_LEVEL: z.enum(["ERROR", "WARN", "INFO", "DEBUG", "SILENT"]).optional(),
   NAS_URL: z.string().url().min(1, "NAS_URL is required"),
   RETRY_ATTEMPTS: z.coerce.number().int().min(0).optional(),
   RETRY_DELAY: z.coerce.number().int().min(0).optional(),

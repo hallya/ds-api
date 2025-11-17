@@ -7,7 +7,7 @@ import {
   validateInfoArgs,
   displayTaskInfo,
 } from "./cli.ts";
-import logger from "./logger.ts";
+import logger from "@logger";
 import type { ApiTask } from "./types/api.ts";
 import { ApiDeleteTaskResult } from "./types/api.ts";
 import type { PurgeResult } from "./types/index.ts";

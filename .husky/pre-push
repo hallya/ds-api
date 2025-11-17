@@ -19,8 +19,8 @@ else
   STASHED=0
 fi
 
-# Run all tests
-deno task test
+# Run all tests with silent logs
+LOG_LEVEL=SILENT deno task test
 TEST_EXIT=$?
 
 # Restore all changes if stashed

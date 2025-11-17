@@ -3,7 +3,7 @@ import "../lib/env.ts";
 
 import { CLIHandler } from "../lib/cli-handler.ts";
 import { parseCLI } from "../lib/args.ts";
-import logger from "../lib/logger.ts";
+import logger from "@logger";
 
 async function main() {
   const { action, arg, options } = parseCLI(Deno.args);

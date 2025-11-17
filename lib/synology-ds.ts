@@ -9,7 +9,7 @@ import {
   type Task,
 } from "./tasks.ts";
 import type { DeleteTaskResult, PurgeResult } from "./types/index.ts";
-import logger from "./logger.ts";
+import logger from "@logger";
 import config, { type Config } from "./config.ts";
 import { retry } from "./retry.ts";
 import { join } from "std/path";
