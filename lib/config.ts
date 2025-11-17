@@ -28,7 +28,7 @@ function getConfig(): Config {
 
   if (!result.success) {
     const errors = result.error.errors.map((e) => `${e.path.join(".")}: ${e.message}`).join(", ");
-    throw new Error(`Configuration validation error: ${errors}`);
+    throw new Error(`\n\nConfiguration validation error: ${errors}\n\n`);
   }
 
   const value = result.data;
